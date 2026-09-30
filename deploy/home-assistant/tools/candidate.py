@@ -112,12 +112,10 @@ def select(destination, owner_repo, version, wrapper_commit, platforms, force=Fa
     if release['draft'] or release['prerelease'] or not re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+', release['tag_name']):
         raise ValueError('Stable requires a regular published release')
     stable_commit = github('commits/' + release['tag_name'])['sha']
-    runs = github('actions/workflows/docker-publish.yml/runs?branch=main&event=push&per_page=50')
-    successful = [run for run in runs['workflow_runs'] if run.get('status') == 'completed' and run.get('conclusion') == 'success']
-    if not successful:
-        raise ValueError('No successful main publisher available')
-    main_run = successful[0]
-    main_commit = main_run['head_sha']
+    # Resolve the branch first: a paginated run list can omit the current build.
+    # paired_run below requires successful images for this exact source revision.
+    # If its publisher is still running, leave the existing store intact and retry.
+    main_commit = github('commits/main')['sha']
     recipe = recipe_hash()
     matrix = []
     for channel, commit, tag in [('stable', stable_commit, release['tag_name'][1:]),
