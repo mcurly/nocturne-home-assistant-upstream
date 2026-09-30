@@ -66,7 +66,7 @@ def registry(repository, reference, arch, revision=None, labels=None):
 
 def paired_run(commit, branch=None):
     suffix = f'&branch={branch}' if branch else ''
-    runs = github('actions/workflows/docker-publish.yml/runs?per_page=100&head_sha=' + commit + suffix)
+    runs = github('actions/workflows/docker-publish.yml/runs?per_page=50&head_sha=' + commit + suffix)
     for run in runs['workflow_runs']:
         if run.get('head_sha') != commit or run.get('conclusion') != 'success':
             continue
@@ -113,10 +113,11 @@ def select(destination, owner_repo, version, wrapper_commit, platforms, force=Fa
     if release['draft'] or release['prerelease'] or not re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+', release['tag_name']):
         raise ValueError('Stable requires a regular published release')
     stable_commit = github('commits/' + release['tag_name'])['sha']
-    runs = github('actions/workflows/docker-publish.yml/runs?branch=main&event=push&status=success&per_page=100')
-    if not runs['workflow_runs']:
+    runs = github('actions/workflows/docker-publish.yml/runs?branch=main&event=push&per_page=50')
+    successful = [run for run in runs['workflow_runs'] if run.get('status') == 'completed' and run.get('conclusion') == 'success']
+    if not successful:
         raise ValueError('No successful main publisher available')
-    main_run = runs['workflow_runs'][0]
+    main_run = successful[0]
     main_commit = main_run['head_sha']
     recipe = recipe_hash()
     matrix = []

@@ -26,5 +26,9 @@
   "renew": "DuckDNS verifica a renovação enquanto funciona. Na aplicação Let's Encrypt separada, agende arranques regulares para a verificar. Use um único gestor para estes ficheiros.",
   "existing": "Já tem certificado? Reutilize a cadeia e chave correspondentes e mantenha o gestor existente. DuckDNS é opcional.",
   "details": "Detalhes técnicos",
-  "unknown": "Não verificado"
+  "unknown": "Não verificado",
+  "address_label": "Endereço HTTPS",
+  "certificate_label": "Ficheiro do certificado",
+  "key_label": "Ficheiro da chave privada",
+  "gateway_label": "Código adicional de acesso ao gateway"
 }

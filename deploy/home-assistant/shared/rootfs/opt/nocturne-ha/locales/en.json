@@ -26,5 +26,9 @@
   "renew": "DuckDNS checks certificate renewal while running. If using the separate Let's Encrypt app, schedule regular starts to check renewal. Choose one certificate manager; do not let two overwrite the same files.",
   "existing": "Already have a certificate? Reuse the matching chain and key; keep your existing certificate manager. DuckDNS is optional.",
   "details": "Technical details",
-  "unknown": "Not checked"
+  "unknown": "Not checked",
+  "address_label": "HTTPS address",
+  "certificate_label": "Certificate file",
+  "key_label": "Private key file",
+  "gateway_label": "Extra gateway access code"
 }

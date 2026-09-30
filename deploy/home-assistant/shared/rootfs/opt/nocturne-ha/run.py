@@ -168,7 +168,7 @@ def prepare_tls(options):
     if options['certificate']:
         cert, key = Path('/ssl') / options['certificate'], Path('/ssl') / options['private_key']
         if not cert.is_file() or not key.is_file():
-            raise ValueError('Ingestelde certificaatbestanden bestaan niet in /ssl')
+            raise ValueError('CERT_FILES: configured certificate files are missing in /ssl')
         return cert, key, False
     if os.environ.get('NOCTURNE_CI_TEST_CERTIFICATE') != '1':
         raise ValueError('CERT_FILES: select trusted certificate files in Configuration')
@@ -385,7 +385,7 @@ def main():
         versions = json.loads((BASE / 'version.json').read_text())
         log(f"Start {versions['name']} | HA-wrapper {versions['app']} | "
             f"pakket {versions['package']} | Nocturne {versions['nocturne']}")
-        state.update(channel=versions.get('channel', ''), links=versions.get('links', {}))
+        state.update(channel=versions.get('channel', ''), links=versions.get('links', {}), version=versions['nocturne'])
         raw_options = json.loads((DATA / 'options.json').read_text())
         state['language'] = raw_options.get('language', 'auto')
         options = validate_options(raw_options)

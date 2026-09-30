@@ -26,5 +26,9 @@
   "renew": "DuckDNS prüft im laufenden Betrieb die Erneuerung. Bei der separaten Let's-Encrypt-App regelmäßige Starts zur Erneuerungsprüfung planen. Nur eine Zertifikatsverwaltung darf dieselben Dateien schreiben.",
   "existing": "Schon ein Zertifikat vorhanden? Passende Kette und Schlüssel sowie die bestehende Verwaltung weiterverwenden. DuckDNS ist optional.",
   "details": "Technische Details",
-  "unknown": "Nicht geprüft"
+  "unknown": "Nicht geprüft",
+  "address_label": "HTTPS-Adresse",
+  "certificate_label": "Zertifikatsdatei",
+  "key_label": "Datei mit privatem Schlüssel",
+  "gateway_label": "Zusätzlicher Gateway-Zugangscode"
 }

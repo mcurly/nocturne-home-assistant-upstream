@@ -26,5 +26,9 @@
   "renew": "DuckDNS controleert certificaatvernieuwing terwijl het draait. Gebruik je de aparte Let's Encrypt-app, plan dan regelmatig starten om vernieuwing te controleren. Kies één certificaatbeheerder; laat er geen twee dezelfde bestanden overschrijven.",
   "existing": "Heb je al een certificaat? Hergebruik de bijpassende keten en sleutel en behoud je bestaande beheerder. DuckDNS is optioneel.",
   "details": "Technische details",
-  "unknown": "Niet gecontroleerd"
+  "unknown": "Niet gecontroleerd",
+  "address_label": "HTTPS-adres",
+  "certificate_label": "Certificaatbestand",
+  "key_label": "Bestand met privésleutel",
+  "gateway_label": "Extra toegangscode voor de gateway"
 }

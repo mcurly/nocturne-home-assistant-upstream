@@ -26,5 +26,9 @@
   "renew": "DuckDNS 运行时会检查证书续期。如使用独立 Let's Encrypt 应用，请安排定期启动以检查续期。相同文件只应由一个证书管理器写入。",
   "existing": "已有证书？请复用匹配的证书链和私钥，并保留现有管理器。DuckDNS 为可选。",
   "details": "技术详情",
-  "unknown": "尚未检查"
+  "unknown": "尚未检查",
+  "address_label": "HTTPS 地址",
+  "certificate_label": "证书文件",
+  "key_label": "私钥文件",
+  "gateway_label": "网关额外访问码"
 }

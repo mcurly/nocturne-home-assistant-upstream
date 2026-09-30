@@ -35,6 +35,8 @@ def render(state, locale='en'):
                                         ('step_certificate', 'certificate_help'), ('step_dns', 'dns_help'),
                                         ('step_finish', 'finish_help')])
     links = state.get('links', {})
+    version_link = (f'<a href="{esc(links["source_url"])}" target="_blank" rel="noopener noreferrer">{esc(state.get("version", ""))}</a>'
+                    if links.get('source_url') else '')
     navigation = ''.join(f'<a href="{esc(links[key])}" target="_blank" rel="noopener noreferrer">{esc(text[label])}</a>'
                          for key, label in [('source_url', 'source'), ('release_url', 'release'),
                                             ('wrapper_url', 'wrapper'), ('build_url', 'build')] if key in links)
@@ -52,7 +54,7 @@ def render(state, locale='en'):
     details = f'<details><summary>{esc(text["details"])}</summary><p><code>{esc(code or text["unknown"])}</code></p><p>{esc(text["restart"])}</p></details>'
     return f'''<!doctype html><html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(text['title'])}</title>
 <style>:root{{font-family:system-ui,sans-serif;color:#203137;background:#f3f7f6}}body{{margin:0}}main{{max-width:850px;margin:auto;padding:32px 22px}}header{{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}}h1{{font-size:clamp(1.8rem,4vw,2.7rem);margin:24px 0 10px}}h2{{font-size:1.15rem}}p{{line-height:1.75}}article,.status{{padding:20px 24px;border:1px solid #dce6e2;background:white;border-radius:15px;margin:16px 0}}.status{{border-left:5px solid #477e69}}.notice{{color:#68491d;background:#fff0d5;padding:14px;border-radius:10px}}a{{color:#216650}}.button{{display:inline-block;padding:12px 20px;border-radius:9px;background:#216650;color:white;text-decoration:none}}select,button{{font:inherit;padding:8px;border-radius:7px;border:1px solid #c7d6d0;background:white}}nav{{display:flex;gap:18px;flex-wrap:wrap;margin:28px 0}}code{{overflow-wrap:anywhere}}.secret{{display:block;user-select:all;background:#edf3ef;padding:12px;border-radius:8px}}details{{margin-top:20px}}footer{{font-size:.9rem}}:focus-visible{{outline:3px solid #df952e;outline-offset:3px}}</style></head><body><main>
-<header><strong>Nocturne · {esc(state.get('channel', ''))}</strong><form method="get"><label for="lang">{esc(text['language'])}</label> <select id="lang" name="lang">{options}</select> <button type="submit">{esc(text['language'])}</button></form></header>
+<header><strong>Nocturne · {esc(state.get('channel', ''))} {version_link}</strong><form method="get"><label for="lang">{esc(text['language'])}</label> <select id="lang" name="lang">{options}</select> <button type="submit">{esc(text['language'])}</button></form></header>
 <h1>{esc(text['title'])}</h1><p>{esc(text['intro'])}</p>
 {'<p class="notice">'+esc(text['demo'])+'</p>' if state.get('demo') else ''}
 <section class="status"><strong>{esc(status)}</strong><p>{esc(state.get('public_url', ''))}</p>{action}{gateway}</section>

@@ -33,6 +33,17 @@ def publish(candidate, destination):
     folder = destination / channel
     write(folder / 'config.json', config)
     write(folder / 'provenance.json', provenance)
+    catalogs = BASE / 'shared/rootfs/opt/nocturne-ha/locales'
+    for path in catalogs.glob('*.json'):
+        text = json.loads(path.read_text(encoding='utf-8'))
+        translated = {'configuration': {
+            'public_url': {'name': text['address_label'], 'description': text['domain_help']},
+            'certificate': {'name': text['certificate_label'], 'description': text['certificate_help']},
+            'private_key': {'name': text['key_label'], 'description': text['certificate_help']},
+            'gateway_auth': {'name': text['gateway_label'], 'description': text['finish_help']},
+            'language': {'name': text['language'], 'description': text['intro']},
+        }, 'network': {'8448/TCP': text['address_label']}}
+        write(folder / 'translations' / path.name, translated)
     for filename in ('README.md', 'DOCS.md', 'CHANGELOG.md'):
         (folder / filename).write_text(
             f'# Nocturne {channel.title()}\n\n'
