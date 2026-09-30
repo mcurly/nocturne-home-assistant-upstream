@@ -1,5 +1,10 @@
 # Nocturne for Home Assistant — upstream proposal
 
+[![Toevoegen aan Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%23home-assistant)
+
+[![Wrapper checks](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml/badge.svg)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml)
+[![Publish Stable and Main](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml/badge.svg)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml)
+
 Stable and Main, prebuilt in GitHub Actions, with a multilingual setup assistant.
 This clean repository contains the complete existing HA runtime, redesigned help,
 and a publication pipeline. Personal extensions and legacy test channels are excluded.
@@ -13,7 +18,7 @@ remain part of the user test plan.
 
 ## Install
 
-After the first successful **Publish Home Assistant Stable and Main** run, add:
+Use **Toevoegen aan Home Assistant** above to add the tested pilot repository, or add:
 
 ```
 https://github.com/smokkelaar/nocturne-home-assistant-upstream#home-assistant
