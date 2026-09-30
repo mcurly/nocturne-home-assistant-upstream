@@ -387,7 +387,7 @@ def main():
             f"pakket {versions['package']} | Nocturne {versions['nocturne']}")
         state.update(channel=versions.get('channel', ''), links=versions.get('links', {}), version=versions['nocturne'])
         raw_options = json.loads((DATA / 'options.json').read_text())
-        state['language'] = raw_options.get('language', 'auto')
+        state['language'] = raw_options.get('language', 'en')
         options = validate_options(raw_options)
         state['public_url'] = options['public_url']
         auth_check = ('Extra gatewaycode ingeschakeld; Nocturne heeft daarnaast zijn eigen aanmelding'

@@ -1,7 +1,10 @@
 # Guided Home Assistant setup
 
 Open the app's HA web interface for the same installation guidance in all eleven
-Nocturne languages. The helper remains available when certificates or startup fail.
+Nocturne languages. English (`en`) is the default. Choose `auto` explicitly to use
+your browser language, or select another language in app Configuration. Upgrades
+preserve your existing setting, including `auto`; change it to `en` if desired.
+The helper remains available when certificates or startup fail.
 
 1. Choose one permanent domain you control. Existing Nocturne accounts/passkeys depend
    on that hostname. If you already have a trusted matching certificate, reuse your

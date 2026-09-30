@@ -11,7 +11,7 @@ LANGUAGES = {'en': 'English', 'es': 'Español', 'fr': 'Français', 'de': 'Deutsc
              'zh': '中文', 'ja': '日本語', 'ko': '한국어'}
 
 
-def language(query, configured='auto', accepted='en'):
+def language(query, configured='en', accepted='en'):
     requested = parse_qs(query).get('lang', [''])[0]
     if requested in LANGUAGES:
         return requested
@@ -74,7 +74,7 @@ def make_handler(state):
             if parsed.path != '/':
                 self.send_error(404)
                 return
-            locale = language(parsed.query, state.get('language', 'auto'), self.headers.get('Accept-Language', 'en'))
+            locale = language(parsed.query, state.get('language', 'en'), self.headers.get('Accept-Language', 'en'))
             body = render(dict(state), locale).encode('utf-8')
             self.send_response(200)
             for name, value in [('Content-Type', 'text/html; charset=utf-8'), ('Cache-Control', 'no-store'),

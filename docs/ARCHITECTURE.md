@@ -47,7 +47,11 @@ store config. The first pilot publishes AMD64; optional ARM64 builds use native 
 
 Images use `ghcr.io/<owner>/<repository>/nocturne-<channel>-<ha-arch>:<version>`.
 HA uses `{arch}` in the image path. Main and Stable share the runtime source but not data.
-Package versions use a wrapper version plus monotonic workflow run/attempt counter.
+Package versions are plain MAJOR.MINOR.PATCH. The patch includes the publication
+run/attempt counter and is greater than the highest stored patch even after a counter
+reset. Both selection and promotion reject versions that are not strictly newer using
+Home Assistant's AwesomeVersion comparator. Hyphenated counters and build metadata
+are prohibited; Nocturne's version remains separate metadata.
 Unchanged source/recipe/platforms skip a build. Dispatch `force=true` for dependency
 maintenance. Neither action updates an installed HA app unless its owner enables updates.
 

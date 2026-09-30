@@ -40,7 +40,7 @@ Open **Configuratie** van de gekozen Nocturne-app. Voor een nieuw voorbeeld:
 | Certificaat (`certificate`) | `fullchain.pem` |
 | Privésleutel (`private_key`) | `privkey.pem` |
 | Extra gatewaycode (`gateway_auth`) | Aan laten tijdens de eerste installatie |
-| Taal (`language`) | `auto` voor de browsertaal, of bijvoorbeeld `nl` |
+| Taal (`language`) | `en` is standaard; kies `nl` of expliciet `auto` voor de browsertaal |
 
 Vervang de voorbeeldnaam door jouw naam. Heb je een andere hostpoort ingesteld, gebruik
 die poort in het adres. Vul alleen de bestandsnamen in: de app koppelt `/ssl` zelf.

@@ -49,6 +49,9 @@ class SetupTests(unittest.TestCase):
             self.assertNotIn('class="button"', page)
 
     def test_language_preference_and_browser_fallback(self):
+        self.assertEqual(help_ui.language('', accepted='nl-NL,nl'), 'en')
+        spec = json.loads((BASE / 'shared/app-spec.json').read_text())
+        self.assertEqual(spec['options']['language'], 'en')
         self.assertEqual(help_ui.language('lang=fr', 'nl', 'de-DE,en'), 'fr')
         self.assertEqual(help_ui.language('lang=invalid', 'auto', 'de-DE,en'), 'de')
         self.assertEqual(help_ui.language('', 'ja', 'nl'), 'ja')

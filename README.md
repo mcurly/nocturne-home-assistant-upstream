@@ -1,6 +1,6 @@
 # Nocturne for Home Assistant — upstream proposal
 
-[![Toevoegen aan Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%23home-assistant)
+[![Add to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%23home-assistant)
 
 [![Wrapper checks](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml/badge.svg)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml)
 [![Publish Stable and Main](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml/badge.svg)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml)
@@ -18,7 +18,7 @@ remain part of the user test plan.
 
 ## Install
 
-Use **Toevoegen aan Home Assistant** above to add the tested pilot repository, or add:
+Use **Add to Home Assistant** above to add the tested pilot repository, or add:
 
 ```
 https://github.com/smokkelaar/nocturne-home-assistant-upstream#home-assistant
@@ -34,8 +34,8 @@ local DNS and Nocturne sign-in. Certificate/setup errors keep the help interface
 Configure the app in Home Assistant and restart after saving. Certificates in `/ssl`
 are read-only; the assistant does not change your router or Home Assistant Core HTTPS.
 
-- [Uitgebreide Nederlandse installatiehulp](docs/SETUP.nl.md)
 - [English setup guide](docs/SETUP.en.md)
+- [Nederlandse installatiehulp](docs/SETUP.nl.md)
 - [Exact upstream integration plan](docs/UPSTREAM-INTEGRATION.md)
 - [Architecture and automatic publication](docs/ARCHITECTURE.md)
 - [Acceptance and migration checklist](docs/ACCEPTANCE.md)
@@ -46,17 +46,19 @@ are read-only; the assistant does not change your router or Home Assistant Core 
 Python 3.12+, Node 24, OpenSSL; Docker Linux for runtime tests.
 
 ```sh
+python -m pip install -r deploy/home-assistant/requirements-ci.txt
 python -m unittest discover -s deploy/home-assistant/tests -v
 python deploy/home-assistant/tools/check_locales.py --upstream
 python deploy/home-assistant/tools/preview.py
 ```
 
-Open `http://127.0.0.1:8765/?lang=nl` for a synthetic setup preview. It has no access
+Open `http://127.0.0.1:8765/?lang=en` for a synthetic setup preview. It has no access
 to HA, credentials or medical data. Stop the preview with Ctrl+C.
 
 Edit messages in `deploy/home-assistant/shared/rootfs/opt/nocturne-ha/locales/*.json`.
-All eleven Nocturne languages have the same message keys. Browser language, explicit
-language selection and HA's `language` setting are supported. Translations are initial
+All eleven Nocturne languages have the same message keys. English is the default.
+Choose `auto` explicitly to follow the browser language, or select another language
+in HA configuration. Existing settings are retained when upgrading. Translations are initial
 drafts and should receive native-speaker review before upstream acceptance.
 
 AMD64 is the first published target. Change `deploy/home-assistant/platforms.json`

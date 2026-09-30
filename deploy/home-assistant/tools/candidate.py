@@ -8,6 +8,7 @@ import re
 import shutil
 import urllib.error
 import urllib.request
+from versions import require_upgrade
 
 BASE = Path(__file__).resolve().parents[1]
 UPSTREAM = 'nightscout/nocturne'
@@ -103,11 +104,19 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
 
+def previous_package(owner_repo, channel):
+    try:
+        return fetch(f'https://raw.githubusercontent.com/{owner_repo}/home-assistant/{channel}/config.json')[0]
+    except urllib.error.HTTPError as error:
+        if error.code != 404:
+            raise
+        return None
+
+
 def select(destination, owner_repo, version, wrapper_commit, platforms, force=False):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', owner_repo):
         raise ValueError('Invalid repository')
-    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+-[0-9]+', version):
-        raise ValueError('Invalid package version')
+    require_upgrade(version)
     release = github('releases/latest')
     if release['draft'] or release['prerelease'] or not re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+', release['tag_name']):
         raise ValueError('Stable requires a regular published release')
@@ -129,6 +138,8 @@ def select(destination, owner_repo, version, wrapper_commit, platforms, force=Fa
                 raise
         if not force and previous and previous['commit'] == commit and previous['recipe'] == recipe and previous['platforms'] == platforms:
             continue
+        published = previous_package(owner_repo, channel)
+        require_upgrade(version, published['version'] if published else None)
         refs = links(commit, release['tag_name'] if channel == 'stable' else None,
                      owner_repo, wrapper_commit, run_id)
         provenance = {'channel': channel, 'commit': commit, 'upstream_tag': tag,

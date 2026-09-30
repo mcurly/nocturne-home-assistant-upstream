@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 import urllib.request
 
-from candidate import BASE, registry, write
+from candidate import BASE, registry, write, previous_package
+from versions import require_upgrade
 
 
 def publish(candidate, destination):
@@ -12,6 +13,8 @@ def publish(candidate, destination):
     repo = provenance['repository']
     channel = provenance['channel']
     version = provenance['version']
+    previous = previous_package(repo, channel)
+    require_upgrade(version, previous['version'] if previous else None)
     image = f'ghcr.io/{repo.lower()}/nocturne-{channel}-' + '{arch}'
     digests = {}
     for arch in provenance['platforms']:
@@ -49,7 +52,7 @@ def publish(candidate, destination):
             f'# Nocturne {channel.title()}\n\n'
             f'Package {version}; Nocturne source {provenance["commit"]}.\n\n'
             f'Open the Home Assistant web interface for multilingual setup help.\n\n'
-            f'[Setup guide](https://github.com/{repo}/blob/main/docs/SETUP.nl.md) · '
+            f'[Setup guide](https://github.com/{repo}/blob/main/docs/SETUP.en.md) · '
             f'[Source]({provenance["links"]["source_url"]})\n', encoding='utf-8')
     (destination / 'repository.yaml').write_text(
         'name: Nocturne Home Assistant (experimental)\nurl: https://github.com/' + repo

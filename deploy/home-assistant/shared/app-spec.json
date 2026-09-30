@@ -29,7 +29,7 @@
     "certificate": "",
     "private_key": "",
     "gateway_auth": true,
-    "language": "auto"
+    "language": "en"
   },
   "schema": {
     "public_url": "url",
