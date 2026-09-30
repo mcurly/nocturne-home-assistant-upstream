@@ -1,0 +1,147 @@
+name: Publish Home Assistant Stable and Main
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Rebuild unchanged upstream versions (dependency maintenance)
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths: ['deploy/home-assistant/**', '.github/workflows/ha-publish.yml']
+permissions:
+  contents: read
+concurrency:
+  group: ha-publish
+  cancel-in-progress: false
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+      changed: ${{ steps.select.outputs.changed }}
+      version: ${{ steps.select.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s deploy/home-assistant/tests -v
+      - id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT: ${{ github.sha }}
+          RUN_NUMBER: ${{ github.run_number }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          FORCE: ${{ inputs.force || false }}
+        run: |
+          VERSION="0.2.0-$((RUN_NUMBER * 100 + RUN_ATTEMPT))"
+          EXTRA=()
+          if [ "$FORCE" = true ]; then EXTRA+=(--force); fi
+          PLATFORMS=$(python -c "import json; print(','.join(json.load(open('deploy/home-assistant/platforms.json'))))")
+          python deploy/home-assistant/tools/check_locales.py --upstream
+          python deploy/home-assistant/tools/candidate.py --output work/candidates --repository "$REPOSITORY" --version "$VERSION" --commit "$COMMIT" --platforms "$PLATFORMS" "${EXTRA[@]}"
+          python - <<'PY'
+          import json, os
+          matrix = json.load(open('work/candidates/matrix.json'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('matrix=' + json.dumps(matrix, separators=(',', ':')) + '\n')
+              out.write('changed=' + str(bool(matrix['include'])).lower() + '\n')
+          PY
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: candidates
+          path: work/candidates
+          retention-days: 7
+  build:
+    needs: select
+    if: needs.select.outputs.changed == 'true'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: candidates
+          path: work/candidates
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and test the exact runtime image
+        env:
+          CONTEXT: ${{ matrix.context }}
+          REPOSITORY: ${{ github.repository }}
+          CHANNEL: ${{ matrix.channel }}
+          ARCH: ${{ matrix.arch }}
+          HASS_ARCH: ${{ matrix.hass_arch }}
+          VERSION: ${{ needs.select.outputs.version }}
+          BASELINE: ${{ matrix.baseline }}
+        run: |
+          IMAGE="ghcr.io/${REPOSITORY,,}/nocturne-${CHANNEL}-${HASS_ARCH}:$VERSION"
+          docker build --platform "linux/$ARCH" --tag "$IMAGE" "$CONTEXT"
+          python deploy/home-assistant/tools/smoke.py --image "$IMAGE"
+          python deploy/home-assistant/tools/setup_smoke.py --image "$IMAGE"
+          if [ -n "$BASELINE" ]; then
+            docker pull "$BASELINE"
+            python deploy/home-assistant/tools/recovery_smoke.py --image "$IMAGE" --baseline "$BASELINE"
+          else
+            python deploy/home-assistant/tools/recovery_smoke.py --image "$IMAGE" --baseline "$IMAGE"
+          fi
+          if docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
+            echo 'Refusing to overwrite an existing version tag'
+            exit 1
+          fi
+          docker push "$IMAGE"
+  promote:
+    needs: [select, build]
+    if: needs.select.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      packages: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: candidates
+          path: work/candidates
+      - name: Publish store metadata after anonymous pulls and label checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          git init work/store
+          git -C work/store remote add origin "https://github.com/$REPOSITORY.git"
+          gh auth setup-git
+          if git ls-remote --exit-code "https://github.com/$REPOSITORY.git" refs/heads/home-assistant >/dev/null; then
+            git -C work/store fetch --depth 1 origin home-assistant
+            git -C work/store checkout -b home-assistant FETCH_HEAD
+          else
+            git -C work/store checkout --orphan home-assistant
+          fi
+          for CHANNEL in stable main; do
+            if [ -f "work/candidates/$CHANNEL.json" ]; then
+              python deploy/home-assistant/tools/publish_store.py --candidate "work/candidates/$CHANNEL.json" --destination work/store
+            fi
+          done
+          git -C work/store config user.name github-actions[bot]
+          git -C work/store config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C work/store add .
+          git -C work/store commit -m 'Publish validated Nocturne Home Assistant versions'
+          git -C work/store push origin HEAD:home-assistant
