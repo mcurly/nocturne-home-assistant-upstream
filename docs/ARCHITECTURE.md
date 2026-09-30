@@ -25,8 +25,11 @@ The guide explicitly asks users to verify these on their devices.
 
 ## Publication
 
-Selection chooses the published stable release and most recent successful paired main
-publisher, using `main-<sha7>` instead of confusing `latest` with main. Each API digest
+Selection chooses the published stable release and resolves the current main source SHA
+before checking its successful paired publisher. If that publisher is incomplete or fails,
+the existing store remains available and the next scheduled run retries. This avoids
+promoting an older result from a paginated workflow list. It uses `main-<sha7>` instead
+of confusing `latest` with main. Each API digest
 is verified against the full source revision. Web correspondence relies on the successful
 paired upstream publisher; it does not claim an embedded revision label where absent.
 
