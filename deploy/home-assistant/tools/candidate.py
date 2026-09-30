@@ -92,8 +92,7 @@ def links(commit, release, wrapper_repository, wrapper_commit, workflow_run):
         raise ValueError('Source links require full commit SHAs')
     return {
         'source_url': f'https://github.com/{UPSTREAM}/tree/{commit}',
-        'release_url': f'https://github.com/{UPSTREAM}/releases/tag/{release}' if release
-                       else f'https://github.com/{UPSTREAM}/tree/{commit}',
+        'release_url': f'https://github.com/{UPSTREAM}/releases/tag/{release}' if release else None,
         'wrapper_url': f'https://github.com/{wrapper_repository}/tree/{wrapper_commit}/deploy/home-assistant',
         'build_url': f'https://github.com/{UPSTREAM}/actions/runs/{workflow_run}',
     }

@@ -48,6 +48,10 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(result['source_url'], 'https://github.com/nightscout/nocturne/tree/' + 'a' * 40)
         self.assertIn('/releases/tag/v0.2.7', result['release_url'])
         self.assertIn('/tree/' + 'b' * 40 + '/deploy/home-assistant', result['wrapper_url'])
+        main = links('a' * 40, None, 'smokkelaar/nocturne-home-assistant-upstream', 'b' * 40, 123)
+        self.assertIsNone(main['release_url'])
+        page = help_ui.render({'links': main, 'version': 'main@aaaaaaa'})
+        self.assertNotIn('Release notes', page)
 
     def test_no_implicit_self_signed_certificate_in_production(self):
         with patch.dict('os.environ', {}, clear=True), tempfile.TemporaryDirectory() as tmp, patch.object(run, 'DATA', Path(tmp)):
