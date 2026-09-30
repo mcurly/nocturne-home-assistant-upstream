@@ -30,5 +30,19 @@
   "address_label": "HTTPS-Adresse",
   "certificate_label": "Zertifikatsdatei",
   "key_label": "Datei mit privatem Schlüssel",
-  "gateway_label": "Zusätzlicher Gateway-Zugangscode"
+  "gateway_label": "Zusätzlicher Gateway-Zugangscode",
+  "gateway_login": "Gateway-Benutzername: nocturne. Verwende den folgenden Zugangscode als Passwort. Dein Nocturne-Konto hat eine separate Anmeldung.",
+  "next_actions": "Nächste Schritte",
+  "yaml_title": "Wildcard-YAML zum Kopieren",
+  "yaml_help": "Kopiere den Beispieltext in die YAML-Konfiguration der passenden Zertifikats-App. Ersetze Domain und Token; behalte die übrigen Einstellungen. Verwende einen Zertifikatsverwalter. Im visuellen DNS-Feld von Let’s Encrypt nur provider und duckdns_token einfügen, ohne dns:.",
+  "monitor_title": "Verfügbare Daten in Home Assistant",
+  "monitor_help": "Öffne Einstellungen → Geräte & Dienste → Home Assistant Supervisor → dein Nocturne-Gerät. Zeige deaktivierte Entitäten und aktiviere CPU Percent und Memory Percent in den Entitätseinstellungen. Version und Latest version sind ebenfalls verfügbar. Füge die Sensoren zum Dashboard hinzu; ihre IDs hängen von der Installation ab.",
+  "monitor_scope": "CPU und RAM betreffen den gesamten Container: API, Web, PostgreSQL und nginx. Es sind keine medizinischen Werte. Die App-Seiten Information, Konfiguration und Protokoll zeigen Nutzung, Optionen und Startfehler. Diese Hilfe zeigt keine Live-Messwerte; bei gestoppten Apps können Statistiken fehlen.",
+  "error_CERT_FILES": "Prüfe im Protokoll des Zertifikatsverwalters die erfolgreiche Ausstellung.\nTrage beide Dateinamen in Nocturne ein: fullchain.pem und privkey.pem, oder deine eigenen. Beide müssen in /ssl liegen.",
+  "error_CERT_HOSTNAME": "Lasse public_url auf der Basisdomain.\nBeantrage ein Zertifikat mit Basisname und *. Wildcard für Tenants; prüfe die SAN-Namen.",
+  "error_CERT_SAN": "DNS-Namen müssen im Subject Alternative Name (SAN) stehen. Common Name allein reicht nicht.\nLasse ein neues Paar für Basisname und *. Wildcard ausstellen.",
+  "error_CERT_KEY_MISMATCH": "Zertifikat und privater Schlüssel passen nicht zusammen.\nWähle beide Dateien aus derselben Ausstellung; stelle das Paar wieder her oder beantrage es neu.",
+  "error_CERT_EXPIRED": "Behebe die fehlgeschlagene Erneuerung im Zertifikatsverwalter.\nDuckDNS muss laufen; die separate Let’s Encrypt-App regelmäßig starten. Prüfe die neue Ausstellung.",
+  "error_CERT_NOT_YET_VALID": "Prüfe Systemdatum, Uhrzeit und Zeitzone von Home Assistant.\nPrüfe den Gültigkeitsbeginn; verwende ein bereits gültiges Zertifikatspaar.",
+  "error_SETUP_REQUIRED": "Prüfe Domain, Port und Dateinamen in der App-Konfiguration.\nLies den Startfehler im App-Protokoll. Daten und Schlüssel behalten; nicht deinstallieren oder die Datenbank zurücksetzen."
 }

@@ -71,6 +71,25 @@ bevat het volledige YAML-voorbeeld en uitleg voor de visuele editor. Start de ap
 voor uitgifte en plan regelmatig starten voor vernieuwing. Zet certificaatbeheer
 in DuckDNS dan uit; laat DNS-updates aan. Kies één schrijver voor dit bestandspaar.
 
+Dit fragment kun je in de **YAML-configuratie van de aparte Let's Encrypt-app**
+plakken. Vervang domein en token en behoud je overige instellingen, waaronder
+e-mailadres, `certfile` en `keyfile`:
+
+```yaml
+domains:
+  - mynocturne.duckdns.org
+  - "*.mynocturne.duckdns.org"
+challenge: dns
+dns:
+  provider: dns-duckdns
+  duckdns_token: YOUR_DUCKDNS_TOKEN
+```
+
+Gebruik je de visuele editor, plak dan in **DNS Provider configuration** alleen
+`provider: dns-duckdns` en `duckdns_token: ...`, zonder de regel `dns:`. Zet de
+twee domeinnamen in het aparte domeinenveld. De hulppagina toont beide YAML-fragmenten
+ook direct, zodat je niet eerst deze handleiding hoeft op te zoeken.
+
 **DNS is een aparte voorwaarde:** basisdomein én tenantnamen moeten naar de HA-server
 leiden. Een lokale DNS-regel voor alleen het basisdomein is soms onvoldoende. Gebruik
 een wildcard/suffixregel of losse tenantregels en test ook op een telefoon met wifi.
@@ -126,7 +145,9 @@ Je browser mag geen certificaatwaarschuwing tonen. Een servercontrole bewijst ni
 jouw browser de keten vertrouwt. Controleer datum/tijd en gebruik de volledige keten.
 Omzeil de waarschuwing niet als installatieoplossing.
 
-Wanneer de gateway om de extra code vraagt, vind je die in de HA-hulppagina. Voltooi
+Wanneer de gateway om gebruikersnaam en wachtwoord vraagt, vul je als gebruikersnaam
+**`nocturne`** in. Het wachtwoord is de extra toegangscode uit de HA-hulppagina.
+Die pagina toont gebruikersnaam en code bij elkaar zodra de app gereed is. Voltooi
 daarna de account- en passkeyaanmaak van Nocturne zelf. Test ook een tweede apparaat en
 een herstart. De gatewaycode en Nocturne-aanmelding zijn twee verschillende stappen.
 
@@ -137,6 +158,11 @@ dit tijdens het draaien. De aparte **Let's Encrypt**-app werkt anders: die contr
 bij een start en stopt daarna. Plan bij die route regelmatig starten in HA; alleen
 installeren is onvoldoende. Laat geen twee beheerders dezelfde bestanden overschrijven.
 [Officiële handleiding voor de aparte app](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md).
+
+Bij een fout staat direct onder de statusmelding **Dit kun je nu doen**, met de
+foutcode en de bijbehorende handelingen. Je hoeft hiervoor Technische details niet te
+openen. De stappen begeleiden je naar Configuratie of het Logboek van de app die
+het probleem moet oplossen. De tabel hieronder is ook een naslaglijst.
 
 De Nocturne-wrapper controleert nieuwe certificaatbestanden en herlaadt geldige updates.
 Bij een afgewezen nieuw paar blijft de laatste geldige kopie actief zolang die nog geldig
@@ -158,3 +184,39 @@ Maak een cold backup voor een upgrade. Main kan nieuwe databasemigraties bevatte
 alleen een oud image terugzetten is geen databaseherstel. Stable en Main hebben ieder
 eigen data. Lees [de migratiechecklist](ACCEPTANCE.md) voordat je een bestaande account
 naar deze nieuwe repository verplaatst.
+
+## 7. Wat krijg je in Home Assistant en waar vind je het?
+
+| Beschikbaar | Waar vind je het? |
+| --- | --- |
+| Installatiehulp, foutgerichte herstelstappen, gatewaygebruikersnaam/-code en wildcard-YAML | Nocturne-app → **Webinterface** |
+| Domein, poort, certificaatbestanden, gatewaykeuze en taal | Nocturne-app → **Configuratie** |
+| Starten, stoppen, herstarten en huidig CPU-/RAM-gebruik | Nocturne-app → **Informatie**; bij een draaiende app |
+| Startfouten en dienstmeldingen | Nocturne-app → **Logboek** |
+| CPU- en geheugensensoren, geïnstalleerde en nieuwste versie | **Home Assistant Supervisor**-integratie → apparaat **Nocturne Stable** of **Nocturne Main** |
+
+Deze sensoren worden door Home Assistant aangeboden voor de geïnstalleerde app;
+je hoeft geen losse Nocturne-integratie, extra token of statistiek-app te installeren.
+De diagnostische entiteiten zijn standaard uitgeschakeld. Zo maak je ze beschikbaar:
+
+1. Open **Instellingen → Apparaten & diensten → Home Assistant Supervisor**.
+2. Open het apparaat van de gewenste Nocturne-app. Stable en Main hebben elk hun
+   eigen apparaat en eigen gebruik.
+3. Toon ook uitgeschakelde entiteiten. Vind je ze niet op het apparaat, open dan
+   **Instellingen → Apparaten & diensten → Entiteiten** en filter op de integratie
+   **Home Assistant Supervisor** en status **Uitgeschakeld**.
+4. Open **CPU Percent** / **CPU-percentage** en ga naar de entiteitsinstellingen
+   (tandwiel). Schakel de entiteit in. Herhaal dit voor **Memory Percent** /
+   **Geheugenpercentage**. Desgewenst kun je **Versie** en **Nieuwste versie** ook
+   inschakelen. De precieze labels volgen jouw HA-taal en versie.
+5. Wacht tot Home Assistant de waarden ophaalt. Voeg de ingeschakelde sensoren via
+   **Dashboard bewerken → Kaart toevoegen** aan je dashboard toe. Kies de entiteiten
+   uit de lijst; hun IDs kunnen per installatie verschillen.
+
+CPU en geheugen gaan over de **hele Nocturne-container**: API, webapp, PostgreSQL
+en nginx samen. Er zijn geen afzonderlijke sensoren voor elk van die diensten.
+De hulppagina legt uit waar de waarden staan, maar haalt zelf geen live meetwaarden op.
+Een gestopte app kan geen actuele statistieken leveren. Het zijn systeemmetingen;
+deze opzet publiceert geen glucosewaarden of andere medische gegevens als HA-entiteiten.
+
+[Officiële Supervisor-sensoren](https://www.home-assistant.io/integrations/hassio/).

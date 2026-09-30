@@ -30,5 +30,19 @@
   "address_label": "HTTPS 地址",
   "certificate_label": "证书文件",
   "key_label": "私钥文件",
-  "gateway_label": "网关额外访问码"
+  "gateway_label": "网关额外访问码",
+  "gateway_login": "网关用户名：nocturne。使用下方访问码作为密码。Nocturne 账号需另外登录。",
+  "next_actions": "现在该怎么做",
+  "yaml_title": "可复制的通配符 YAML",
+  "yaml_help": "将示例复制到相应证书应用的 YAML 配置。替换域名和令牌，保留其他设置，只使用一个证书管理器。在 Let’s Encrypt 可视化 DNS 字段中，仅粘贴 provider 和 duckdns_token，不含 dns:。",
+  "monitor_title": "Home Assistant 提供的数据",
+  "monitor_help": "打开设置 → 设备与服务 → Home Assistant Supervisor → Nocturne 设备。显示已禁用实体，在实体设置中启用 CPU Percent 和 Memory Percent。也可启用 Version 和 Latest version，再添加到仪表板。实体 ID 取决于安装。",
+  "monitor_scope": "CPU 和内存是整个容器的用量，包括 API、网页、PostgreSQL 和 nginx，不是医疗数据。应用的信息、配置和日志页面提供用量、设置和启动错误。本助手不显示实时用量；停止的应用可能没有统计数据。",
+  "error_CERT_FILES": "检查证书管理器日志，确认签发成功。\n在 Nocturne 配置中填写两个文件名，通常是 fullchain.pem 和 privkey.pem，两者必须位于 /ssl。",
+  "error_CERT_HOSTNAME": "public_url 应保持为基础域名。\n申请包含基础域名及租户通配符 *. 的证书，检查签发后的 SAN 名称。",
+  "error_CERT_SAN": "证书的 Subject Alternative Name (SAN) 必须包含 DNS 名称，只有 Common Name 不够。\n重新申请包含基础域名与 *. 通配符的证书和密钥。",
+  "error_CERT_KEY_MISMATCH": "证书与私钥不匹配。\n选择同次签发的两个文件，恢复或重新签发完整的一对。",
+  "error_CERT_EXPIRED": "在证书管理器中修复续期失败。\n保持 DuckDNS 运行；为单独的 Let’s Encrypt 应用安排定期启动，确认新证书已签发。",
+  "error_CERT_NOT_YET_VALID": "检查 Home Assistant 系统日期、时间和时区。\n检查证书生效日期，使用当前已生效的证书和密钥。",
+  "error_SETUP_REQUIRED": "在配置中更正域名、端口和证书文件名。\n查看应用日志中的启动错误，保留数据和密钥，不要卸载应用或重置数据库。"
 }

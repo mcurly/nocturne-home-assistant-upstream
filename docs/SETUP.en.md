@@ -26,7 +26,8 @@ For Nocturne tenants, complete the wildcard section below before creating accoun
    Nocturne access; HTTP-01 requires public port 80. Do not treat certificate issuance
    as a reason to expose the app.
 5. When startup checks succeed, choose Open Nocturne. Check the HTTPS tab has no browser
-   certificate warning. Use the gateway code shown through authenticated HA ingress,
+   certificate warning. For the gateway, use username **`nocturne`** and the access
+   code shown through authenticated HA ingress as the password. Both are displayed together,
    then complete Nocturne's own account/passkey setup. Test a second device and restart.
 
 Your certificate manager owns renewal. DuckDNS checks while running. The separate
@@ -39,6 +40,9 @@ For `CERT_FILES`, check issuance and both filenames. For `CERT_HOSTNAME`/`CERT_S
 check the exact permanent domain. `CERT_KEY_MISMATCH` requires a matching pair.
 `CERT_EXPIRED` means renewal needs attention; `CERT_NOT_YET_VALID` also requires clock
 checks. For `SETUP_REQUIRED`, inspect configuration and app logs; do not reset data.
+The helper shows the error code and its specific next actions immediately below the
+status in **What to do now**. No technical-details expansion is required. Selectable
+wildcard YAML snippets are also available directly in the helper.
 
 The server cannot prove your browser's DNS route, certificate trust or passkey ceremony.
 Keep these as user checks. Use cold backups before upgrades; an old image does not
@@ -123,6 +127,37 @@ both must be trusted, without warnings. `*.mynocturne.duckdns.org` covers `user1
 not `a.b.mynocturne.duckdns.org` or `token.share.mynocturne.duckdns.org`. Features using
 those deeper hosts need separate DNS/certificate coverage; they are not included in
 this one-level tenant setup. Keep existing account/passkey hostnames unchanged.
+
+## Available Home Assistant diagnostics
+
+| Available | Where to find it |
+| --- | --- |
+| Guided setup, error-specific next actions, gateway username/code, wildcard YAML | Nocturne app → Web interface |
+| Domain, port, certificate files, gateway choice and language | Nocturne app → Configuration |
+| Start/stop/restart and current CPU/RAM usage | Nocturne app → Information, while running |
+| Startup errors and service messages | Nocturne app → Log |
+| CPU/memory sensors, installed and latest version | Home Assistant Supervisor integration → Nocturne Stable or Main device |
+
+Home Assistant provides these diagnostic entities for installed apps; no separate
+Nocturne integration, token or statistics app is needed. They are disabled by default:
+
+1. Open **Settings → Devices & services → Home Assistant Supervisor** and choose
+   the device for Nocturne Stable or Main. They have separate devices and metrics.
+2. Show disabled entities. Alternatively, open the **Entities** tab and filter for
+   the Supervisor integration and **Disabled** status.
+3. Open **CPU Percent**, then entity settings (gear), and enable it. Repeat for
+   **Memory Percent**. Optionally enable **Version** and **Latest version**.
+   Labels may differ with your HA language/version.
+4. Allow Home Assistant to fetch values, then add the enabled entities to your
+   dashboard using **Edit dashboard → Add card**. Select them from the list;
+   entity IDs are installation-specific.
+
+CPU and RAM measure the whole container, combining API, web, PostgreSQL and nginx.
+There are no separate per-service sensors. This helper explains where to obtain
+values; it does not fetch/display live usage. Stopped apps may have unavailable
+statistics. These are system diagnostics; this package does not expose glucose or
+other medical data as HA entities.
+[Official Supervisor sensors](https://www.home-assistant.io/integrations/hassio/).
 
 [Dutch walkthrough](SETUP.nl.md) ·
 [DuckDNS app](https://github.com/home-assistant/addons/blob/master/duckdns/DOCS.md) ·

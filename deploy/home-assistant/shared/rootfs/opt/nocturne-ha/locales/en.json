@@ -30,5 +30,19 @@
   "address_label": "HTTPS address",
   "certificate_label": "Certificate file",
   "key_label": "Private key file",
-  "gateway_label": "Extra gateway access code"
+  "gateway_label": "Extra gateway access code",
+  "gateway_login": "Gateway username: nocturne. Use the access code below as the password. Your Nocturne account is a separate sign-in.",
+  "next_actions": "What to do now",
+  "yaml_title": "Copyable wildcard YAML",
+  "yaml_help": "Select the example text and copy it into the matching certificate app’s YAML configuration. Replace the example domain and token. These are partial examples: keep your other settings. Use one certificate manager. In the visual Let’s Encrypt DNS field, paste only provider and duckdns_token, without dns:.",
+  "monitor_title": "What is available in Home Assistant",
+  "monitor_help": "Open Settings → Devices & services → Home Assistant Supervisor → your Nocturne Stable or Main device. Show disabled entities, open CPU Percent and Memory Percent, and enable them in entity settings. You can also enable Version and Latest version. Then add the enabled sensors to your dashboard. Entity IDs depend on your installation.",
+  "monitor_scope": "CPU and memory measure this whole container: API, web, PostgreSQL and nginx together. They are not separate service metrics or medical readings. Use the app’s Information page for current usage, Configuration for options and Log for startup errors. The setup assistant does not fetch or display live usage; stopped apps may have unavailable statistics.",
+  "error_CERT_FILES": "Open the certificate manager’s Log and confirm successful issuance.\nIn Nocturne Configuration, enter fullchain.pem and privkey.pem (or your actual filenames). Both files must exist in /ssl.",
+  "error_CERT_HOSTNAME": "Keep public_url on the intended base domain.\nRequest a certificate containing that base name and its *. wildcard for tenants, then check the issued certificate’s SAN names.",
+  "error_CERT_SAN": "The certificate needs DNS names under Subject Alternative Name (SAN); a Common Name alone is insufficient.\nAsk the certificate manager to issue a new pair with the base name and its *. wildcard.",
+  "error_CERT_KEY_MISMATCH": "The certificate and private key do not belong together.\nSelect both files from the same successful issuance; restore or reissue the pair at the certificate manager. Do not mix an old key with a new certificate.",
+  "error_CERT_EXPIRED": "Open the certificate manager’s Log and fix failed renewal.\nDuckDNS renews while running; the separate Let’s Encrypt app needs scheduled starts. Verify a new certificate was issued.",
+  "error_CERT_NOT_YET_VALID": "Check Home Assistant’s system date/time and timezone.\nCheck the certificate’s start date; use a currently valid pair if it is still in the future.",
+  "error_SETUP_REQUIRED": "Open this app’s Configuration and correct the domain, port and certificate filenames.\nOpen this app’s Log for the startup error. Keep existing data and keys; do not uninstall or reset the database."
 }

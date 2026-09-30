@@ -30,5 +30,19 @@
   "address_label": "HTTPS-adres",
   "certificate_label": "Certificaatbestand",
   "key_label": "Bestand met privésleutel",
-  "gateway_label": "Extra toegangscode voor de gateway"
+  "gateway_label": "Extra toegangscode voor de gateway",
+  "gateway_login": "Gatewaygebruikersnaam: nocturne. Gebruik de toegangscode hieronder als wachtwoord. Je Nocturne-account heeft een aparte aanmelding.",
+  "next_actions": "Dit kun je nu doen",
+  "yaml_title": "Kopieerbare wildcard-YAML",
+  "yaml_help": "Selecteer de voorbeeldtekst en plak die in de YAML-configuratie van de bijbehorende certificaatapp. Vervang het voorbeelddomein en token. Dit zijn gedeeltelijke voorbeelden: behoud de overige instellingen. Kies één certificaatbeheerder. Plak in het visuele DNS-veld van Let’s Encrypt alleen provider en duckdns_token, zonder dns:.",
+  "monitor_title": "Wat is beschikbaar in Home Assistant",
+  "monitor_help": "Open Instellingen → Apparaten & diensten → Home Assistant Supervisor → jouw apparaat Nocturne Stable of Main. Toon uitgeschakelde entiteiten, open CPU Percent en Memory Percent en schakel ze in bij de entiteitsinstellingen. Je kunt ook Versie en Nieuwste versie inschakelen. Voeg de ingeschakelde sensoren daarna aan je dashboard toe. Entiteitsnamen verschillen per installatie.",
+  "monitor_scope": "CPU en geheugen meten de hele container: API, webapp, PostgreSQL en nginx samen. Dit zijn geen afzonderlijke dienstmetingen of medische waarden. Bekijk het tabblad Informatie van de app voor huidig gebruik, Configuratie voor opties en Logboek voor startfouten. De installatiehulp haalt zelf geen live verbruik op; bij een gestopte app kunnen statistieken ontbreken.",
+  "error_CERT_FILES": "Open het Logboek van de certificaatbeheerder en controleer succesvolle uitgifte.\nVul bij Nocturne Configuratie fullchain.pem en privkey.pem in, of jouw echte bestandsnamen. Beide bestanden moeten in /ssl staan.",
+  "error_CERT_HOSTNAME": "Laat public_url op het bedoelde basisdomein staan.\nVraag een certificaat aan met die basisnaam en de *. wildcard voor tenants en controleer de SAN-namen in het uitgegeven certificaat.",
+  "error_CERT_SAN": "Het certificaat moet DNS-namen onder Subject Alternative Name (SAN) bevatten; alleen een Common Name is onvoldoende.\nLaat de certificaatbeheerder een nieuw paar uitgeven met de basisnaam en de *. wildcard.",
+  "error_CERT_KEY_MISMATCH": "Certificaat en privésleutel horen niet bij elkaar.\nKies beide bestanden uit dezelfde succesvolle uitgifte; herstel of vernieuw het paar bij de certificaatbeheerder. Combineer geen oude sleutel met een nieuw certificaat.",
+  "error_CERT_EXPIRED": "Open het Logboek van de certificaatbeheerder en herstel de mislukte vernieuwing.\nDuckDNS vernieuwt tijdens het draaien; plan bij de aparte Let’s Encrypt-app regelmatig starten. Controleer dat een nieuw certificaat is uitgegeven.",
+  "error_CERT_NOT_YET_VALID": "Controleer de systeemdatum, tijd en tijdzone van Home Assistant.\nControleer de ingangsdatum van het certificaat; gebruik een nu geldig paar als die datum nog in de toekomst ligt.",
+  "error_SETUP_REQUIRED": "Open Configuratie van deze app en corrigeer domein, poort en certificaatnamen.\nOpen het Logboek van deze app voor de startfout. Behoud gegevens en sleutels; verwijder de app niet en reset de database niet."
 }

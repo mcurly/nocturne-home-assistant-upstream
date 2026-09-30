@@ -30,5 +30,19 @@
   "address_label": "HTTPS 주소",
   "certificate_label": "인증서 파일",
   "key_label": "개인 키 파일",
-  "gateway_label": "게이트웨이 추가 접근 코드"
+  "gateway_label": "게이트웨이 추가 접근 코드",
+  "gateway_login": "게이트웨이 사용자 이름: nocturne. 아래 접근 코드를 비밀번호로 사용하세요. Nocturne 계정 로그인은 별도입니다.",
+  "next_actions": "지금 할 일",
+  "yaml_title": "복사 가능한 와일드카드 YAML",
+  "yaml_help": "예시를 해당 인증서 앱의 YAML 설정에 복사하세요. 도메인과 토큰을 바꾸고 다른 설정은 유지하며 인증서 관리자는 하나만 사용하세요. Let’s Encrypt의 DNS 입력란에는 dns: 없이 provider와 duckdns_token만 붙여 넣으세요.",
+  "monitor_title": "Home Assistant에서 확인할 수 있는 데이터",
+  "monitor_help": "설정 → 기기 및 서비스 → Home Assistant Supervisor → Nocturne 기기를 여세요. 비활성 엔티티를 표시하고 설정에서 CPU Percent와 Memory Percent를 활성화하세요. Version과 Latest version도 사용할 수 있습니다. 대시보드에 추가할 수 있으며 ID는 설치마다 다릅니다.",
+  "monitor_scope": "CPU와 메모리는 API, 웹, PostgreSQL, nginx를 포함한 컨테이너 전체의 사용량이며 의료 데이터가 아닙니다. 앱의 정보, 설정, 로그에서 사용량, 옵션, 시작 오류를 확인하세요. 이 도움말은 실시간 사용량을 표시하지 않으며 중지된 앱의 통계는 없을 수 있습니다.",
+  "error_CERT_FILES": "인증서 관리자 로그에서 발급 성공을 확인하세요.\nNocturne 설정에 두 파일명을 입력하세요. 보통 /ssl에 있는 fullchain.pem과 privkey.pem입니다.",
+  "error_CERT_HOSTNAME": "public_url은 기본 도메인으로 유지하세요.\n기본 이름과 테넌트용 *. 와일드카드를 포함하는 인증서를 신청하고 SAN 이름을 확인하세요.",
+  "error_CERT_SAN": "Subject Alternative Name (SAN)에 DNS 이름이 필요합니다. Common Name만으로는 부족합니다.\n기본 이름과 *. 와일드카드를 포함한 새 인증서와 키를 발급받으세요.",
+  "error_CERT_KEY_MISMATCH": "인증서와 개인 키가 일치하지 않습니다.\n같은 발급에서 나온 두 파일을 선택하고 전체 쌍을 복원하거나 재발급하세요.",
+  "error_CERT_EXPIRED": "인증서 관리자의 갱신 오류를 수정하세요.\nDuckDNS는 계속 실행하고 별도 Let’s Encrypt 앱은 정기 시작을 예약하세요. 새 발급을 확인하세요.",
+  "error_CERT_NOT_YET_VALID": "Home Assistant의 시스템 날짜, 시간, 시간대를 확인하세요.\n인증서 시작 날짜를 확인하고 현재 유효한 인증서와 키를 사용하세요.",
+  "error_SETUP_REQUIRED": "설정에서 도메인, 포트, 인증서 파일명을 수정하세요.\n앱 로그에서 시작 오류를 확인하세요. 데이터와 키를 유지하고 앱을 삭제하거나 데이터베이스를 초기화하지 마세요."
 }

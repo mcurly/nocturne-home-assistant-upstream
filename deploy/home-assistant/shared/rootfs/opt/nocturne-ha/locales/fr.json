@@ -30,5 +30,19 @@
   "address_label": "Adresse HTTPS",
   "certificate_label": "Fichier du certificat",
   "key_label": "Fichier de clé privée",
-  "gateway_label": "Code d'accès supplémentaire à la passerelle"
+  "gateway_label": "Code d'accès supplémentaire à la passerelle",
+  "gateway_login": "Nom d’utilisateur de la passerelle : nocturne. Utilisez le code ci-dessous comme mot de passe. Le compte Nocturne a une connexion distincte.",
+  "next_actions": "Actions à effectuer",
+  "yaml_title": "YAML générique à copier",
+  "yaml_help": "Copiez cet extrait dans la configuration YAML du gestionnaire de certificat correspondant. Remplacez domaine et jeton ; gardez les autres paramètres. Choisissez un seul gestionnaire. Dans le champ DNS visuel de Let’s Encrypt, collez uniquement provider et duckdns_token, sans dns:.",
+  "monitor_title": "Données disponibles dans Home Assistant",
+  "monitor_help": "Ouvrez Paramètres → Appareils et services → Home Assistant Supervisor → votre appareil Nocturne. Affichez les entités désactivées et activez CPU Percent et Memory Percent dans leurs paramètres. Version et Latest version sont aussi disponibles. Ajoutez les capteurs au tableau de bord ; leurs identifiants varient.",
+  "monitor_scope": "CPU et mémoire concernent le conteneur entier : API, web, PostgreSQL et nginx. Ce ne sont pas des mesures médicales. Les pages Information, Configuration et Journal de l’app présentent utilisation, options et erreurs de démarrage. Cette aide ne montre pas de mesures en direct ; une app arrêtée peut ne pas fournir de statistiques.",
+  "error_CERT_FILES": "Vérifiez la réussite de l’émission dans le journal du gestionnaire de certificat.\nRenseignez les deux fichiers Nocturne, normalement fullchain.pem et privkey.pem, présents dans /ssl.",
+  "error_CERT_HOSTNAME": "Conservez public_url sur le domaine de base.\nDemandez un certificat avec ce domaine et son *. générique pour les tenants ; vérifiez les noms SAN.",
+  "error_CERT_SAN": "Le certificat doit contenir des noms DNS dans Subject Alternative Name (SAN). Common Name seul ne suffit pas.\nDemandez une nouvelle paire pour le domaine de base et son *. générique.",
+  "error_CERT_KEY_MISMATCH": "Le certificat et la clé privée ne correspondent pas.\nChoisissez les deux fichiers issus de la même émission ; restaurez ou réémettez cette paire.",
+  "error_CERT_EXPIRED": "Corrigez le renouvellement échoué dans le gestionnaire de certificat.\nDuckDNS doit fonctionner ; programmez des démarrages de l’app Let’s Encrypt séparée. Vérifiez la nouvelle émission.",
+  "error_CERT_NOT_YET_VALID": "Vérifiez la date, l’heure et le fuseau horaire de Home Assistant.\nVérifiez le début de validité ; utilisez une paire déjà valide.",
+  "error_SETUP_REQUIRED": "Corrigez domaine, port et fichiers dans Configuration.\nConsultez le Journal de cette app. Gardez données et clés ; ne désinstallez pas et ne réinitialisez pas la base."
 }

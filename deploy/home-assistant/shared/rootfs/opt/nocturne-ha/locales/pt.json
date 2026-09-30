@@ -30,5 +30,19 @@
   "address_label": "Endereço HTTPS",
   "certificate_label": "Ficheiro do certificado",
   "key_label": "Ficheiro da chave privada",
-  "gateway_label": "Código adicional de acesso ao gateway"
+  "gateway_label": "Código adicional de acesso ao gateway",
+  "gateway_login": "Utilizador do gateway: nocturne. Use o código abaixo como palavra-passe. A conta Nocturne tem um início de sessão separado.",
+  "next_actions": "O que fazer agora",
+  "yaml_title": "YAML wildcard para copiar",
+  "yaml_help": "Copie o exemplo para a configuração YAML da app de certificados correspondente. Substitua domínio e token; preserve os restantes ajustes. Use um gestor. No campo DNS visual de Let’s Encrypt cole apenas provider e duckdns_token, sem dns:.",
+  "monitor_title": "Dados disponíveis no Home Assistant",
+  "monitor_help": "Abra Definições → Dispositivos e serviços → Home Assistant Supervisor → o dispositivo Nocturne. Mostre entidades desativadas e ative CPU Percent e Memory Percent nas suas definições. Version e Latest version também estão disponíveis. Adicione os sensores ao painel; os IDs variam.",
+  "monitor_scope": "CPU e memória medem todo o contentor: API, web, PostgreSQL e nginx. Não são valores médicos. Informação, Configuração e Registo mostram uso, opções e erros de arranque. Esta ajuda não mostra uso em tempo real; apps paradas podem não fornecer estatísticas.",
+  "error_CERT_FILES": "Confirme a emissão bem-sucedida no registo do gestor de certificados.\nIndique ambos os ficheiros no Nocturne, normalmente fullchain.pem e privkey.pem, presentes em /ssl.",
+  "error_CERT_HOSTNAME": "Mantenha public_url no domínio base.\nPeça um certificado com o nome base e wildcard *. para tenants; verifique os nomes SAN.",
+  "error_CERT_SAN": "São necessários nomes DNS em Subject Alternative Name (SAN). Common Name sozinho não basta.\nPeça um novo par com nome base e wildcard *..",
+  "error_CERT_KEY_MISMATCH": "O certificado e a chave privada não correspondem.\nEscolha ambos os ficheiros da mesma emissão; restaure ou volte a emitir o par.",
+  "error_CERT_EXPIRED": "Corrija a renovação falhada no gestor de certificados.\nMantenha DuckDNS a funcionar; agende arranques da app Let’s Encrypt separada. Confirme a nova emissão.",
+  "error_CERT_NOT_YET_VALID": "Verifique data, hora e fuso horário do Home Assistant.\nVerifique o início da validade; use um par já válido.",
+  "error_SETUP_REQUIRED": "Corrija domínio, porta e ficheiros em Configuração.\nConsulte o Registo desta app. Preserve dados e chaves; não desinstale nem reponha a base de dados."
 }

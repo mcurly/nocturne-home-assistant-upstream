@@ -30,5 +30,19 @@
   "address_label": "HTTPS アドレス",
   "certificate_label": "証明書ファイル",
   "key_label": "秘密鍵ファイル",
-  "gateway_label": "ゲートウェイの追加アクセスコード"
+  "gateway_label": "ゲートウェイの追加アクセスコード",
+  "gateway_login": "ゲートウェイのユーザー名：nocturne。下のアクセスコードをパスワードに使います。Nocturne アカウントへのログインは別です。",
+  "next_actions": "今行うこと",
+  "yaml_title": "コピーできるワイルドカード YAML",
+  "yaml_help": "例を対応する証明書アプリの YAML 設定にコピーしてください。ドメインとトークンを置き換え、他の設定は残します。管理アプリは一つにしてください。Let’s Encrypt の DNS 入力欄では dns: を除き、provider と duckdns_token のみ貼り付けます。",
+  "monitor_title": "Home Assistant で確認できる情報",
+  "monitor_help": "設定 → デバイスとサービス → Home Assistant Supervisor → Nocturne デバイスを開きます。無効なエンティティを表示し、設定で CPU Percent と Memory Percent を有効にしてください。Version と Latest version も利用できます。ダッシュボードに追加できます。ID は環境ごとに異なります。",
+  "monitor_scope": "CPU とメモリーは API、Web、PostgreSQL、nginx を含むコンテナー全体の値で、医療データではありません。アプリの情報、設定、ログで使用量、設定項目、起動エラーを確認できます。このヘルプにリアルタイム使用量は表示されません。停止中は統計が利用できない場合があります。",
+  "error_CERT_FILES": "証明書管理アプリのログで発行成功を確認します。\nNocturne に両方のファイル名を入力します。通常は /ssl 内の fullchain.pem と privkey.pem です。",
+  "error_CERT_HOSTNAME": "public_url は基本ドメインのままにします。\n基本名とテナント用 *. ワイルドカードを含む証明書を発行し、SAN の名前を確認します。",
+  "error_CERT_SAN": "Subject Alternative Name (SAN) に DNS 名が必要です。Common Name だけでは不十分です。\n基本名と *. ワイルドカードを含む新しい証明書と鍵を発行します。",
+  "error_CERT_KEY_MISMATCH": "証明書と秘密鍵が一致しません。\n同じ発行から得た両方のファイルを選び、ペアを復元または再発行します。",
+  "error_CERT_EXPIRED": "証明書管理アプリの更新エラーを修正します。\nDuckDNS を稼働させ、単独の Let’s Encrypt は定期起動を設定します。新しい発行を確認します。",
+  "error_CERT_NOT_YET_VALID": "Home Assistant の日付、時刻、タイムゾーンを確認します。\n証明書の有効開始日を確認し、現在有効なペアを使います。",
+  "error_SETUP_REQUIRED": "設定でドメイン、ポート、ファイル名を修正します。\nアプリのログで起動エラーを確認します。データと鍵を保持し、アンインストールやデータベースの初期化はしないでください。"
 }

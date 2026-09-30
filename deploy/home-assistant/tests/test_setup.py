@@ -20,6 +20,31 @@ from check_locales import check
 
 
 class SetupTests(unittest.TestCase):
+    def test_error_specific_actions_are_prominent_in_every_language(self):
+        for locale in help_ui.LANGUAGES:
+            catalog = json.loads((BASE / 'shared/rootfs/opt/nocturne-ha/locales' / (locale + '.json')).read_text(encoding='utf-8'))
+            for error in ('CERT_FILES', 'CERT_HOSTNAME', 'CERT_SAN', 'CERT_KEY_MISMATCH',
+                          'CERT_EXPIRED', 'CERT_NOT_YET_VALID', 'SETUP_REQUIRED'):
+                page = help_ui.render({'error': error}, locale)
+                visible = page.split('<details>')[0]
+                self.assertIn('role="alert"', visible)
+                self.assertIn(error, visible)
+                self.assertIn(catalog['error_' + error].split('\n')[0], visible)
+
+    def test_ready_gateway_shows_username_and_help_does_not_leak_code_on_failure(self):
+        page = help_ui.render({'ready': True, 'gateway': 'synthetic-code'})
+        self.assertIn('Gateway username: nocturne', page)
+        self.assertIn('synthetic-code', page)
+        self.assertNotIn('synthetic-code', help_ui.render({'error': 'CERT_FILES', 'gateway': 'synthetic-code'}))
+
+    def test_yaml_covers_dynamic_tenants_and_missing_invalid_domain_is_safe(self):
+        page = help_ui.render({'public_url': 'https://example.duckdns.org:8448'})
+        self.assertIn('*.example.duckdns.org &gt; example.duckdns.org', page)
+        self.assertIn('duckdns_token: YOUR_DUCKDNS_TOKEN', page)
+        self.assertIn('CPU Percent', page)
+        self.assertIn('Memory Percent', page)
+        self.assertIn('mynocturne.duckdns.org', help_ui.render({'public_url': 'https://['}))
+
     def test_paired_run_rejects_success_for_other_source_revision(self):
         with patch('candidate.github', return_value={'workflow_runs': [
                 {'head_sha': 'old', 'conclusion': 'success', 'id': 1}]}):
