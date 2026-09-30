@@ -15,3 +15,9 @@
   through `auto`; preserve explicit user language settings during upgrades.
 - Keep all eleven locale catalogs complete. Default documentation links use
   the English guide; other languages remain selectable.
+- Tenant names are created dynamically. Never maintain a per-user host allowlist:
+  accept the base domain and any valid single tenant label under that fixed domain.
+  Keep unrelated/lookalike domains and deeper labels blocked. Preserve Nocturne's
+  authentication, tenant checks and untrusted forwarded-header protections.
+- Document base plus wildcard SANs and wildcard DNS together. Certificate coverage
+  and DNS must work for future tenants, not just the first test account.
