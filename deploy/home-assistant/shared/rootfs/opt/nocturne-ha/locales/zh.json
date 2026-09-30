@@ -12,7 +12,7 @@
   "step_dns": "4. 在家中使用该地址",
   "step_finish": "5. 打开 Nocturne 并登录",
   "domain_help": "使用你管理的域名。创建账户后请保持域名不变：通行密钥依赖该域名。",
-  "duck_help": "在 duckdns.org 创建名称。在 Home Assistant → 设置 → 应用中安装 DuckDNS。在 DuckDNS 中输入完整域名和令牌，不要在这里输入。阅读并接受条款后启用 Let's Encrypt。选择 fullchain.pem 和 privkey.pem。启动 DuckDNS，在日志中确认已创建证书。",
+  "duck_help": "在 duckdns.org 创建名称。在 Home Assistant → 设置 → 应用中安装 DuckDNS。在 DuckDNS 中输入完整域名和令牌，不要在这里输入。阅读并接受条款后启用 Let's Encrypt。选择 fullchain.pem 和 privkey.pem。启动 DuckDNS，在日志中确认已创建证书。 要支持随时创建的租户，请申请同时包含 mynocturne.duckdns.org 和 *.mynocturne.duckdns.org 的证书，并将示例域名替换为自己的域名。还需配置通配符 DNS，无需逐个列出租户。此应用的 URL 应保持使用基础域名。",
   "certificate_help": "在此应用的配置中，证书填写 fullchain.pem，私钥填写 privkey.pem。HTTPS 域名的端口为 Stable 的 8448 或 Main 的 8449；如已修改主机端口，请使用该端口。/ssl 保持只读。无需修改 Home Assistant Core 的 HTTPS 设置。",
   "dns_help": "设备必须将同一域名解析到 Home Assistant 地址。使用本地 DNS（分离 DNS）或支持 NAT 回环的路由器。仅使用 DuckDNS 可能指向公网地址。请同时在 Wi-Fi 手机上的浏览器测试。DNS 证书验证无需将 Nocturne 暴露到互联网。",
   "finish_help": "保存配置并重启此应用。在新标签页打开 HTTPS 地址，浏览器不应显示证书警告。完成 Nocturne 账户和通行密钥设置，并测试第二台设备。",

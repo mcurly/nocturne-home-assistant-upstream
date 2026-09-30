@@ -76,6 +76,13 @@ try:
             phase = 'WRONG_HOST'
             with request('/health', 'wrong.example.net:18448') as response:
                 assert response.status == 421
+            for host in ('user1.homeassistant.local:18448', 'a.homeassistant.local:18448'):
+                with request('/health', host) as response:
+                    assert response.status == 200
+            for host in ('homeassistant.local.evil.net:18448', 'a.b.homeassistant.local:18448',
+                         '-bad.homeassistant.local:18448'):
+                with request('/health', host) as response:
+                    assert response.status == 421
             phase = 'DATA_DENIAL'
             with request('/api/v4/ChartData/dashboard') as response:
                 # No owner has been created: Nocturne itself must still reject data

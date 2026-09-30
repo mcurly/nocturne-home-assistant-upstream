@@ -30,6 +30,59 @@ De actuele velden staan in de [officiële DuckDNS-handleiding](https://github.co
 Een eventuele instructie daar om HA Core HTTPS te wijzigen is niet nodig om alleen
 Nocturne HTTPS te geven. Behoud de huidige HA-configuratie.
 
+## 2a. Tenantadressen: het basisdomein én een wildcard
+
+Voor `https://user1.mynocturne.duckdns.org:8448` moet het certificaat beide DNS-namen
+bevatten: `mynocturne.duckdns.org` én `*.mynocturne.duckdns.org`. Alleen de eerste
+dekt geen tenants; alleen de wildcard dekt het basisdomein niet. De poort staat niet
+in het certificaat. Dit stel je bij de certificaatbeheerder in, niet door `public_url`
+naar een tenant te veranderen.
+
+**Als DuckDNS jouw certificaat beheert:**
+
+1. Open **Instellingen → Apps → DuckDNS → Configuratie → Bewerken als YAML**.
+2. Behoud je token en overige instellingen. Gebruik voor jouw geregistreerde naam:
+
+   ```yaml
+   domains:
+     - mynocturne.duckdns.org
+     - "*.mynocturne.duckdns.org > mynocturne.duckdns.org"
+   ```
+
+   Vervang de voorbeeldnaam overal. De `>`-notatie hoort specifiek bij DuckDNS en
+   bepaalt de uitvoernaam. Voeg het basisdomein dus ook als eerste regel toe.
+3. Behoud `fullchain.pem` en `privkey.pem` (of jouw bestaande bestandsnamen).
+   Accepteer de voorwaarden zelf voordat je `lets_encrypt.accept_terms` aanzet.
+   Sla op, herstart DuckDNS en wacht op succesvolle uitgifte in het logboek.
+4. Controleer bij het certificaat de DNS-namen onder **Subject Alternative Name**:
+   beide namen moeten aanwezig zijn. Herstart daarna Nocturne of wacht op herladen.
+   Een oud certificaat krijgt niet vanzelf een wildcard doordat Nocturne herstart.
+   Verwijder geen certificaten of appdata om dit te proberen af te dwingen.
+
+[DuckDNS wildcardnotatie](https://github.com/home-assistant/addons/blob/master/duckdns/DOCS.md).
+De actuele app combineert deze regels in één certificaataanvraag. Uitgifte en
+vernieuwing op een echte HA-installatie blijven onderdeel van de pilot.
+
+**Als de aparte Let's Encrypt-app jouw certificaat beheert:** gebruik DNS-validatie,
+`provider: dns-duckdns` en je token onder `duckdns_token`. Zet onder `domains` de
+twee losse namen `mynocturne.duckdns.org` en `"*.mynocturne.duckdns.org"`, zonder `>`.
+HTTP-validatie kan geen wildcard uitgeven. De [Engelse handleiding](SETUP.en.md#when-the-separate-lets-encrypt-app-manages-your-certificate)
+bevat het volledige YAML-voorbeeld en uitleg voor de visuele editor. Start de app
+voor uitgifte en plan regelmatig starten voor vernieuwing. Zet certificaatbeheer
+in DuckDNS dan uit; laat DNS-updates aan. Kies één schrijver voor dit bestandspaar.
+
+**DNS is een aparte voorwaarde:** basisdomein én tenantnamen moeten naar de HA-server
+leiden. Een lokale DNS-regel voor alleen het basisdomein is soms onvoldoende. Gebruik
+een wildcard/suffixregel of losse tenantregels en test ook op een telefoon met wifi.
+Laat `public_url` op `https://mynocturne.duckdns.org:8448` staan (Main: `:8449`),
+zonder `user1` of `*`. Maak de tenant in Nocturne en test beide URLs zonder waarschuwing.
+
+De wildcard dekt één extra niveau, zoals `user1`, niet `a.b` of `token.share`.
+Functies met diepere hostnamen vragen aparte certificaat- en DNS-dekking. Native mode
+zonder gatewaycode laat na de wrappercorrectie het basisdomein en één tenantniveau
+door; vreemde domeinen blijven geblokkeerd. Nocturne controleert de toegang zelf.
+Verander bestaande account-/passkeynamen niet zomaar.
+
 ## 3. Vul de Nocturne-app in
 
 Open **Configuratie** van de gekozen Nocturne-app. Voor een nieuw voorbeeld:

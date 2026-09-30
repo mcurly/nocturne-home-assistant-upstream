@@ -6,6 +6,8 @@ your browser language, or select another language in app Configuration. Upgrades
 preserve your existing setting, including `auto`; change it to `en` if desired.
 The helper remains available when certificates or startup fail.
 
+For Nocturne tenants, complete the wildcard section below before creating accounts.
+
 1. Choose one permanent domain you control. Existing Nocturne accounts/passkeys depend
    on that hostname. If you already have a trusted matching certificate, reuse your
    existing certificate manager; DuckDNS is optional.
@@ -43,7 +45,86 @@ Keep these as user checks. Use cold backups before upgrades; an old image does n
 reverse a database migration. Stable and Main have independent data. Moving from the
 old repository is a separate identity/backup migration, not an in-place package rename.
 
-[Detailed Dutch walkthrough](SETUP.nl.md) ·
+## Tenant addresses: base domain AND wildcard certificate
+
+For `https://user1.mynocturne.duckdns.org:8448`, the certificate must contain both
+`mynocturne.duckdns.org` and `*.mynocturne.duckdns.org` as DNS Subject Alternative
+Names (SANs). A certificate for the base name alone does not cover tenants. A wildcard
+alone does not cover the base name. The port is not part of a certificate name.
+
+### When DuckDNS manages your certificate
+
+1. Open **Settings → Apps → DuckDNS → Configuration**, then edit as YAML.
+2. Keep your existing token and other settings. For a registered DuckDNS name
+   `mynocturne.duckdns.org`, replace only the `domains` list with:
+
+   ```yaml
+   domains:
+     - mynocturne.duckdns.org
+     - "*.mynocturne.duckdns.org > mynocturne.duckdns.org"
+   ```
+
+   Replace the example name everywhere. The `>` syntax belongs specifically to
+   the DuckDNS app, not the separate Let's Encrypt app. It identifies the certificate
+   output name; it does not itself add the base name, which is why the first entry matters.
+3. Set `lets_encrypt.accept_terms` only after accepting the terms. Keep the existing
+   `certfile` and `keyfile` names (normally `fullchain.pem` and `privkey.pem`). Save
+   and restart DuckDNS. Wait for its log to confirm successful certificate issuance.
+4. Confirm the certificate's SAN list contains **both** names above, then restart
+   Nocturne or wait for its certificate reload. Do not delete existing certificate
+   files or Nocturne data to force this change. If issuance fails, read the DuckDNS
+   log first; restarting Nocturne cannot add names to an old certificate.
+
+This combines the [DuckDNS wildcard syntax](https://github.com/home-assistant/addons/blob/master/duckdns/DOCS.md)
+with a base-domain entry. The current app sends those entries to one
+[Dehydrated certificate request](https://github.com/home-assistant/addons/blob/master/duckdns/rootfs/etc/s6-overlay/s6-rc.d/duckdns/run).
+Actual issuance/renewal on your HA installation remains a pilot acceptance check.
+
+### When the separate Let's Encrypt app manages your certificate
+
+Use DNS validation and request both names. In YAML configuration, the relevant fields
+are below; retain your other configuration and replace the example email/token locally:
+
+```yaml
+email: your-email@example.com
+domains:
+  - mynocturne.duckdns.org
+  - "*.mynocturne.duckdns.org"
+certfile: fullchain.pem
+keyfile: privkey.pem
+challenge: dns
+dns:
+  provider: dns-duckdns
+  duckdns_token: YOUR_DUCKDNS_TOKEN
+```
+
+In the visual editor's **DNS Provider configuration** field, paste only the two
+provider/token fields, without the enclosing `dns:` key. HTTP validation cannot issue
+wildcards. Start the app, verify issuance, and schedule recurring starts for renewal.
+If choosing this manager, disable certificate management in DuckDNS while retaining
+its DNS updates. Never let both apps write the same certificate pair.
+[Official Let's Encrypt configuration](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md).
+
+### DNS, Nocturne and verification
+
+Keep Nocturne `public_url` at `https://mynocturne.duckdns.org:8448` (Main: `:8449`),
+without `user1` or `*`. Tenant creation is managed in Nocturne, not by HA's certificate
+configuration. The wrapper forwards the requested tenant host unchanged. Native mode
+(gateway code disabled) accepts the base host and one tenant label; unrelated domains
+and deeper labels remain blocked. Nocturne still checks accounts and tenant permissions.
+
+Ensure the base name **and** tenant names resolve to the HA server from every device.
+For local split DNS, use a wildcard/suffix rule or explicit entries for each tenant;
+an override for the base name alone may not cover `user1`. Test the tenant URL on your
+phone as well. A valid wildcard certificate cannot repair a missing DNS/network route.
+
+Open both the base URL and a real tenant URL and inspect their browser certificates:
+both must be trusted, without warnings. `*.mynocturne.duckdns.org` covers `user1` but
+not `a.b.mynocturne.duckdns.org` or `token.share.mynocturne.duckdns.org`. Features using
+those deeper hosts need separate DNS/certificate coverage; they are not included in
+this one-level tenant setup. Keep existing account/passkey hostnames unchanged.
+
+[Dutch walkthrough](SETUP.nl.md) ·
 [DuckDNS app](https://github.com/home-assistant/addons/blob/master/duckdns/DOCS.md) ·
 [Separate Let's Encrypt app](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md) ·
 [Certificate challenge methods](https://letsencrypt.org/docs/challenge-types/).

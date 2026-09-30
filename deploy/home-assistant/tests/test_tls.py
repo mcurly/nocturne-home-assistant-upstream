@@ -47,6 +47,20 @@ class CertificateTests(unittest.TestCase):
         self.assertIn('UTC', info.summary())
         self.assertEqual(64, len(info.leaf_sha256))
 
+    def test_base_and_wildcard_certificate_covers_one_tenant_level(self):
+        cert, key = certificate(self.root, 'tenant',
+                                'mynocturne.duckdns.org,DNS:*.mynocturne.duckdns.org')
+        for host in ('mynocturne.duckdns.org', 'user1.mynocturne.duckdns.org'):
+            tls.inspect_pair(cert, key, host)
+        for host in ('user1.other.duckdns.org', 'a.b.mynocturne.duckdns.org'):
+            with self.assertRaisesRegex(tls.CertificateError, 'CERT_HOSTNAME'):
+                tls.inspect_pair(cert, key, host)
+
+    def test_base_only_certificate_does_not_cover_tenants(self):
+        cert, key = certificate(self.root, 'base-only', 'mynocturne.duckdns.org')
+        with self.assertRaisesRegex(tls.CertificateError, 'CERT_HOSTNAME'):
+            tls.inspect_pair(cert, key, 'user1.mynocturne.duckdns.org')
+
     def test_wrong_hostname_rejected(self):
         with self.assertRaisesRegex(tls.CertificateError, 'CERT_HOSTNAME'):
             tls.inspect_pair(*self.wrong, 'homeassistant.local')
