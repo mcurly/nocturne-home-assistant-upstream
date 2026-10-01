@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "Certificato e chiave privata non corrispondono.\nScegli entrambi i file della stessa emissione; ripristina o richiedi di nuovo la coppia.",
   "error_CERT_EXPIRED": "Correggi il rinnovo fallito nel gestore certificati.\nLascia DuckDNS in esecuzione; programma avvii dell’app Let’s Encrypt separata. Verifica la nuova emissione.",
   "error_CERT_NOT_YET_VALID": "Controlla data, ora e fuso orario di Home Assistant.\nControlla l’inizio della validità; usa una coppia già valida.",
-  "error_SETUP_REQUIRED": "Correggi dominio, porta e nomi dei file in Configurazione.\nConsulta il Registro di questa app. Conserva dati e chiavi; non disinstallare o azzerare il database."
+  "error_SETUP_REQUIRED": "Correggi dominio, porta e nomi dei file in Configurazione.\nConsulta il Registro di questa app. Conserva dati e chiavi; non disinstallare o azzerare il database.",
+  "gateway_fallback": "L’app resta accessibile con il codice gateway attivo; la disattivazione non è ancora confermata.",
+  "gateway_setup": "Accedi con nocturne e il codice mostrato. Completa la creazione del proprietario/account Nocturne, poi salva gateway_auth: false e riavvia.",
+  "gateway_recovery": "Mantieni il gateway attivo e completa il recupero account. Ripristina il backup corrispondente se necessario; non azzerare dati o chiavi.",
+  "gateway_check": "Controlla codice e registro: runtime/stato/demo o rifiuto di dati anonimi non confermato. Verifica accesso e condivisione in Nocturne. Entrambe le normali route dati devono negare accesso anonimo (401). Mantieni il gateway attivo fino ad allora.",
+  "skip_gateway_label": "Salta intenzionalmente il controllo",
+  "skip_gateway_help": "Solo con gateway_auth disattivato. Salta il controllo del wrapper per accesso anonimo intenzionale; Nocturne determina ancora i permessi di accesso e condivisione. Disattivato per impostazione predefinita. Salva e riavvia.",
+  "gateway_skipped": "Controllo saltato intenzionalmente. Nocturne determina l’accesso anonimo. Disattiva skip_gateway_check e riavvia per ripristinare i controlli."
 }

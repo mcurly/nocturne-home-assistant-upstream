@@ -21,3 +21,8 @@
   authentication, tenant checks and untrusted forwarded-header protections.
 - Document base plus wildcard SANs and wildcard DNS together. Certificate coverage
   and DNS must work for future tenants, not just the first test account.
+
+- Keep `skip_gateway_check` default false. Honor explicit opt-in only with gateway
+  disabled, display the bypass, and preserve Nocturne permissions and TLS/host checks.
+- Never interpolate installation domains or secrets into copyable examples. Use
+  `mynocturne.duckdns.org`; retain regression coverage for generic examples.

@@ -121,6 +121,24 @@ def main(image):
             raise RuntimeError('Secrets changed on restart')
         execute(identity, "import sys\nsys.path.insert(0, '/opt/nocturne-ha')\nimport run\nassert run.psql(database='nocturne', sql='SELECT id FROM public.ha_wrapper_smoke') == '42'")
         print('PASS: clean stop, restart, persistent secrets and database row')
+        # Fresh-instance native check fails: retain a usable gateway, not shutdown.
+        execute(identity, """
+import json, re, shutil
+from pathlib import Path
+assert Path('/data/.disposable-ci').exists()
+config = Path('/run/nocturne/nginx.conf').read_text()
+Path('/ssl').mkdir(exist_ok=True)
+for directive, target in [('ssl_certificate', 'ci.crt'), ('ssl_certificate_key', 'ci.key')]:
+    source = re.search(r'^\s+' + directive + r' (.+);$', config, re.M).group(1)
+    shutil.copyfile(source, '/ssl/' + target)
+Path('/ssl/ci.key').chmod(0o600)
+Path('/data/options.json').write_text(json.dumps({'certificate': 'ci.crt', 'private_key': 'ci.key', 'gateway_auth': False}))
+""")
+        docker('stop', '-t', '100', identity)
+        docker('start', identity)
+        wait_ready(identity)
+        assert 'GATEWAY_SETUP' in docker('logs', identity, check=False)
+        print('PASS: failed native preflight retains working authenticated gateway')
         # Exercise the actual main() startup with false, not only generated nginx.
         # Deliberately no real enrollment, login, health data, or published ports.
         print(docker('exec', '-i', '-e', 'NOCTURNE_CI_FIXTURE=' + identity,
@@ -137,6 +155,21 @@ def main(image):
             if before != after:
                 raise RuntimeError('Secrets changed in native mode')
         print('PASS: configured native startup and second restart; no Basic prompt; anonymous data 401; stable keys')
+        execute(identity, """
+import json
+from pathlib import Path
+assert Path('/data/.disposable-ci').exists()
+path = Path('/data/options.json')
+options = json.loads(path.read_text())
+options['skip_gateway_check'] = True
+path.write_text(json.dumps(options))
+""")
+        docker('stop', '-t', '100', identity)
+        docker('start', identity)
+        wait_ready(identity, native_probe)
+        assert 'GATEWAY_SKIPPED' in docker('logs', identity, check=False)
+        print('PASS: explicit skip startup has no Basic prompt; Nocturne permissions unchanged')
+
     finally:
         # These exact UUID names were created above, never accepted from user input.
         docker('rm', '-f', identity, check=False)

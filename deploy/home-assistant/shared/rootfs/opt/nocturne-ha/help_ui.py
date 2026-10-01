@@ -2,7 +2,6 @@
 import html
 import http.server
 import json
-import re
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
@@ -35,12 +34,8 @@ def render(state, locale='en'):
                     for title, body in [('step_domain', 'domain_help'), ('step_duck', 'duck_help'),
                                         ('step_certificate', 'certificate_help'), ('step_dns', 'dns_help'),
                                         ('step_finish', 'finish_help')])
-    try:
-        hostname = urlsplit(state.get('public_url', '')).hostname or 'mynocturne.duckdns.org'
-    except ValueError:
-        hostname = 'mynocturne.duckdns.org'
-    if not re.fullmatch(r'[a-z0-9][a-z0-9.-]*\.duckdns\.org', hostname):
-        hostname = 'mynocturne.duckdns.org'
+    # Examples must never incorporate installation-specific addresses.
+    hostname = 'mynocturne.duckdns.org'
     duck_yaml = f'domains:\n  - {hostname}\n  - "*.{hostname} > {hostname}"'
     le_yaml = (f'domains:\n  - {hostname}\n  - "*.{hostname}"\n'
                'challenge: dns\ndns:\n  provider: dns-duckdns\n  duckdns_token: YOUR_DUCKDNS_TOKEN')
@@ -67,7 +62,15 @@ def render(state, locale='en'):
     code = state.get('error', '')
     recovery = ''
     if code:
-        actions = text.get('error_' + code, text['error_SETUP_REQUIRED']).split('\n')
+        if code == 'GATEWAY_SKIPPED':
+            actions = [text['gateway_skipped']]
+        elif code.startswith('GATEWAY_'):
+            instruction = (text['gateway_setup'] if code == 'GATEWAY_SETUP' else
+                           text['gateway_recovery'] if code == 'GATEWAY_RECOVERY' else
+                           text['certificate_help'] if code == 'GATEWAY_TLS' else text['gateway_check'])
+            actions = ([text['gateway_fallback']] if state.get('gateway_issue') else []) + [instruction]
+        else:
+            actions = text.get('error_' + code, text['error_SETUP_REQUIRED']).split('\n')
         recovery = (f'<aside class="notice" role="alert" id="recovery"><h2>{esc(text["next_actions"])}</h2>'
                     f'<p><code>{esc(code)}</code></p><ol>'
                     + ''.join(f'<li>{esc(step)}</li>' for step in actions)

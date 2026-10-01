@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "证书与私钥不匹配。\n选择同次签发的两个文件，恢复或重新签发完整的一对。",
   "error_CERT_EXPIRED": "在证书管理器中修复续期失败。\n保持 DuckDNS 运行；为单独的 Let’s Encrypt 应用安排定期启动，确认新证书已签发。",
   "error_CERT_NOT_YET_VALID": "检查 Home Assistant 系统日期、时间和时区。\n检查证书生效日期，使用当前已生效的证书和密钥。",
-  "error_SETUP_REQUIRED": "在配置中更正域名、端口和证书文件名。\n查看应用日志中的启动错误，保留数据和密钥，不要卸载应用或重置数据库。"
+  "error_SETUP_REQUIRED": "在配置中更正域名、端口和证书文件名。\n查看应用日志中的启动错误，保留数据和密钥，不要卸载应用或重置数据库。",
+  "gateway_fallback": "应用仍可通过网关访问码打开；暂时无法确认可关闭网关。",
+  "gateway_setup": "使用 nocturne 和显示的访问码登录，完成 Nocturne 所有者及账号设置，然后保存 gateway_auth: false 并重启。",
+  "gateway_recovery": "保持网关开启并完成账号恢复。必要时恢复匹配的备份；不要重置数据或密钥。",
+  "gateway_check": "检查上方代码和应用日志：无法确认运行状态、演示模式或匿名数据拒绝。检查 Nocturne 访问和共享设置。两个普通数据路径都必须拒绝匿名访问（401），通过检查前保持网关开启。",
+  "skip_gateway_label": "主动跳过网关检查",
+  "skip_gateway_help": "仅在 gateway_auth 关闭时有效。为有意开放的匿名访问跳过包装层检查；Nocturne 的访问和共享设置仍决定权限。默认关闭。保存后重启。",
+  "gateway_skipped": "已主动跳过网关检查。匿名访问由 Nocturne 设置决定。关闭 skip_gateway_check 并重启可恢复检查。"
 }

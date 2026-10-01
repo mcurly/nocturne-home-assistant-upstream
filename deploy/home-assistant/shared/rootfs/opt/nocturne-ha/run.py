@@ -269,25 +269,47 @@ def verify_native_auth(options):
         # requireAuthentication is a legacy Nightscout compatibility field.
         # Current upstream main always sets it false, even on a private instance.
         # Check actual anonymous access and the real authorization result below.
-        if (status.get('status') != 'ok' or status.get('runtimeState') != 'loaded'
-                or status.get('anonymousReadAccess') is not False
-                or (status.get('isDemo') is not None and status.get('isDemo') is not False)):
-            raise ValueError('GATEWAY_AUTH: geladen private Nocturne-instantie niet bevestigd')
+        if status.get('status') != 'ok' or status.get('runtimeState') != 'loaded':
+            raise ValueError('GATEWAY_STATE: Nocturne-runtime is niet geladen')
+        # Main also uses anonymousReadAccess for tenant share-link capabilities.
+        # It is not proof that this normal host exposes anonymous data. Verify
+        # actual protected routes below rather than rejecting this flag alone.
+        if status.get('isDemo') is not None and status.get('isDemo') is not False:
+            raise ValueError('GATEWAY_DEMO: demo-instantie; extra toegang blijft vereist')
     except (OSError, http.client.HTTPException, json.JSONDecodeError, UnicodeError):
         raise ValueError('GATEWAY_AUTH: Nocturne-aanmelding kon niet veilig worden gecontroleerd') from None
     finally:
         connection.close()
 
-    connection = http.client.HTTPConnection('127.0.0.1', 8080, timeout=3)
+    for path in ('/api/v4/ChartData/dashboard', '/api/v4/glucose/sensor?limit=1'):
+        connection = http.client.HTTPConnection('127.0.0.1', 8080, timeout=3)
+        try:
+            connection.request('GET', path, headers=headers)
+            code = connection.getresponse().status
+            if code != 401:
+                raise ValueError(f'GATEWAY_DENIAL: niet-aangemelde gegevensaanvraag gaf HTTP {code}, verwacht 401')
+        except (OSError, http.client.HTTPException):
+            raise ValueError('GATEWAY_AUTH: toegangsweigering kon niet veilig worden gecontroleerd') from None
+        finally:
+            connection.close()
+
+
+def effective_gateway(options):
+    """Keep a working outer gate if native auth cannot yet be confirmed."""
+    effective = dict(options)
+    if options['gateway_auth']:
+        return effective, ''
+    if options.get('skip_gateway_check', False):
+        return effective, 'GATEWAY_SKIPPED'
     try:
-        connection.request('GET', '/api/v4/ChartData/dashboard', headers=headers)
-        code = connection.getresponse().status
-        if code != 401:
-            raise ValueError(f'GATEWAY_AUTH: niet-aangemelde gegevensaanvraag gaf HTTP {code}, verwacht 401')
-    except (OSError, http.client.HTTPException):
-        raise ValueError('GATEWAY_AUTH: toegangsweigering kon niet veilig worden gecontroleerd') from None
-    finally:
-        connection.close()
+        verify_native_auth(options)
+    except ValueError as error:
+        code = str(error).split(':', 1)[0]
+        if not code.startswith('GATEWAY_'):
+            raise
+        effective['gateway_auth'] = True
+        return effective, code
+    return effective, ''
 
 
 class Supervisor:
@@ -444,8 +466,18 @@ def main():
         supervisor.start('Nocturne API', ['dotnet', '/app/Nocturne.API.dll'],
                          user='app', env=api_env, cwd='/app')
         supervisor.wait_for('Nocturne API', lambda: api_reachable(options['hostname']), 300)
-        if not options['gateway_auth']:
-            verify_native_auth(options)
+        requested_native = not options['gateway_auth']
+        options, gateway_issue = effective_gateway(options)
+        state['gateway_issue'] = gateway_issue
+        if gateway_issue == 'GATEWAY_SKIPPED':
+            auth_check = 'GATEWAY_SKIPPED: gatewaycontrole bewust overgeslagen; Nocturne-toegangsrechten zijn leidend'
+            supervisor.checks['Toegangscontrole'] = auth_check
+            log(auth_check)
+        elif gateway_issue:
+            auth_check = gateway_issue + ': gatewaycode blijft actief; zie Webinterface voor herstelstappen'
+            supervisor.checks['Toegangscontrole'] = auth_check
+            log(auth_check)
+        elif requested_native:
             auth_check = 'Private Nocturne-instantie bevestigd; anonieme gegevensaanvraag geweigerd (401), geen extra gatewaycode'
             supervisor.checks['Toegangscontrole'] = auth_check
             log('Geen extra gateway-pop-up; verplichte Nocturne-aanmelding en API-toegangsweigering bevestigd')
@@ -472,7 +504,7 @@ def main():
         supervisor.wait_for('HTTPS', tls_listener, 20)
         last_certificate_check = 0
         last_certificate_error = ''
-        state.update(ready=True, gateway=passwords['gateway'] if options['gateway_auth'] else '')
+        state.update(ready=True, error=gateway_issue, gateway=passwords['gateway'] if options['gateway_auth'] else '')
         log('Alle diensten gestart. Open Webinterface in HA voor status, link en toegangsmodus.')
         while not supervisor.stop.wait(5):
             supervisor.check_children()
@@ -494,7 +526,7 @@ def main():
                 matched = peer_fingerprint(options['hostname']) == certificates.active.info.leaf_sha256
             except OSError:
                 matched = False
-            state['error'] = last_certificate_error.split(':', 1)[0] if last_certificate_error else ''
+            state['error'] = last_certificate_error.split(':', 1)[0] if last_certificate_error else gateway_issue
             state['ready'] = (matched and api_reachable(options['hostname']) and web_response_reachable(options))
             supervisor.status['HTTPS'] = ('lokaal TLS-certificaat bevestigd; browservertrouwen nog testen'
                 if matched else 'TLS_RESPONSE: lokaal geladen certificaat niet bevestigd')
@@ -507,7 +539,7 @@ def main():
             log(f'STARTFOUT: {err}')
         else:
             log(f'STARTFOUT: {type(err).__name__}; zie de voorafgaande dienstmelding')
-        state.update(ready=False, gateway='', error=(str(err).split(':', 1)[0] if str(err).startswith('CERT_') else 'SETUP_REQUIRED'))
+        state.update(ready=False, gateway='', error=(str(err).split(':', 1)[0] if str(err).startswith(('CERT_', 'GATEWAY_')) else 'SETUP_REQUIRED'))
         supervisor.shutdown()
         supervisor.children.clear()
         while not supervisor.stop.wait(1):

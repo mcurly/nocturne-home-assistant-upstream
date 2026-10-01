@@ -44,6 +44,7 @@ def publish(candidate, destination):
             'certificate': {'name': text['certificate_label'], 'description': text['certificate_help']},
             'private_key': {'name': text['key_label'], 'description': text['certificate_help']},
             'gateway_auth': {'name': text['gateway_label'], 'description': text['finish_help']},
+            'skip_gateway_check': {'name': text['skip_gateway_label'], 'description': text['skip_gateway_help']},
             'language': {'name': text['language'], 'description': text['intro']},
         }, 'network': {'8448/TCP': text['address_label']}}
         write(folder / 'translations' / path.name, translated)

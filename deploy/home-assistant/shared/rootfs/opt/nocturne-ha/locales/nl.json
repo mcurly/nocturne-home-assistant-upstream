@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "Certificaat en privésleutel horen niet bij elkaar.\nKies beide bestanden uit dezelfde succesvolle uitgifte; herstel of vernieuw het paar bij de certificaatbeheerder. Combineer geen oude sleutel met een nieuw certificaat.",
   "error_CERT_EXPIRED": "Open het Logboek van de certificaatbeheerder en herstel de mislukte vernieuwing.\nDuckDNS vernieuwt tijdens het draaien; plan bij de aparte Let’s Encrypt-app regelmatig starten. Controleer dat een nieuw certificaat is uitgegeven.",
   "error_CERT_NOT_YET_VALID": "Controleer de systeemdatum, tijd en tijdzone van Home Assistant.\nControleer de ingangsdatum van het certificaat; gebruik een nu geldig paar als die datum nog in de toekomst ligt.",
-  "error_SETUP_REQUIRED": "Open Configuratie van deze app en corrigeer domein, poort en certificaatnamen.\nOpen het Logboek van deze app voor de startfout. Behoud gegevens en sleutels; verwijder de app niet en reset de database niet."
+  "error_SETUP_REQUIRED": "Open Configuratie van deze app en corrigeer domein, poort en certificaatnamen.\nOpen het Logboek van deze app voor de startfout. Behoud gegevens en sleutels; verwijder de app niet en reset de database niet.",
+  "gateway_fallback": "De app is bereikbaar met de gatewaycode nog aan; het verzoek om die uit te zetten kon nog niet worden bevestigd.",
+  "gateway_setup": "Meld je via de gateway aan met gebruikersnaam nocturne en de getoonde code. Voltooi Nocturne-eigenaar/accountaanmaak. Sla daarna gateway_auth: false op en herstart.",
+  "gateway_recovery": "Laat de gateway aan en voltooi Nocturne-accountherstel. Herstel zo nodig de bijbehorende back-up; reset geen gegevens of sleutels.",
+  "gateway_check": "Controleer de code hierboven en het app-Logboek: runtime/status/demo of weigering van anonieme gegevens kon niet worden bevestigd. Controleer Nocturne-toegangs/deelinstellingen. Beide gewone gegevensroutes moeten anonieme toegang weigeren (401). Houd de gateway aan totdat deze controle slaagt.",
+  "skip_gateway_label": "Gatewaycontrole bewust overslaan",
+  "skip_gateway_help": "Alleen met gateway_auth uit. Sla de wrappercontrole over voor bewust anonieme toegang; Nocturne-toegangs/deelinstellingen bepalen nog steeds de rechten. Standaard uit. Opslaan en herstarten.",
+  "gateway_skipped": "Gatewaycontrole bewust overgeslagen. Nocturne-toegangs/deelinstellingen bepalen anonieme toegang. Zet skip_gateway_check uit en herstart om controles te herstellen."
 }

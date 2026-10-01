@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "Le certificat et la clé privée ne correspondent pas.\nChoisissez les deux fichiers issus de la même émission ; restaurez ou réémettez cette paire.",
   "error_CERT_EXPIRED": "Corrigez le renouvellement échoué dans le gestionnaire de certificat.\nDuckDNS doit fonctionner ; programmez des démarrages de l’app Let’s Encrypt séparée. Vérifiez la nouvelle émission.",
   "error_CERT_NOT_YET_VALID": "Vérifiez la date, l’heure et le fuseau horaire de Home Assistant.\nVérifiez le début de validité ; utilisez une paire déjà valide.",
-  "error_SETUP_REQUIRED": "Corrigez domaine, port et fichiers dans Configuration.\nConsultez le Journal de cette app. Gardez données et clés ; ne désinstallez pas et ne réinitialisez pas la base."
+  "error_SETUP_REQUIRED": "Corrigez domaine, port et fichiers dans Configuration.\nConsultez le Journal de cette app. Gardez données et clés ; ne désinstallez pas et ne réinitialisez pas la base.",
+  "gateway_fallback": "L’app reste accessible avec le code de passerelle actif ; sa désactivation n’a pas encore été confirmée.",
+  "gateway_setup": "Connectez-vous avec nocturne et le code affiché. Terminez la création du propriétaire/compte Nocturne, puis enregistrez gateway_auth: false et redémarrez.",
+  "gateway_recovery": "Gardez la passerelle active et terminez la récupération du compte. Restaurez la sauvegarde correspondante si nécessaire ; ne réinitialisez pas les données ou clés.",
+  "gateway_check": "Vérifiez le code et le journal : runtime/statut/démo ou refus des données anonymes non confirmé. Vérifiez les paramètres d’accès/partage de Nocturne. Les deux routes de données normales doivent refuser l’accès anonyme (401). Gardez la passerelle active jusque-là.",
+  "skip_gateway_label": "Ignorer volontairement le contrôle",
+  "skip_gateway_help": "Uniquement avec gateway_auth désactivé. Ignore le contrôle du wrapper pour un accès anonyme voulu ; Nocturne détermine toujours les droits d’accès et de partage. Désactivé par défaut. Enregistrez et redémarrez.",
+  "gateway_skipped": "Contrôle volontairement ignoré. Nocturne détermine l’accès anonyme. Désactivez skip_gateway_check et redémarrez pour rétablir les contrôles."
 }

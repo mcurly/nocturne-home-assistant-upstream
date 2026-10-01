@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "Zertifikat und privater Schlüssel passen nicht zusammen.\nWähle beide Dateien aus derselben Ausstellung; stelle das Paar wieder her oder beantrage es neu.",
   "error_CERT_EXPIRED": "Behebe die fehlgeschlagene Erneuerung im Zertifikatsverwalter.\nDuckDNS muss laufen; die separate Let’s Encrypt-App regelmäßig starten. Prüfe die neue Ausstellung.",
   "error_CERT_NOT_YET_VALID": "Prüfe Systemdatum, Uhrzeit und Zeitzone von Home Assistant.\nPrüfe den Gültigkeitsbeginn; verwende ein bereits gültiges Zertifikatspaar.",
-  "error_SETUP_REQUIRED": "Prüfe Domain, Port und Dateinamen in der App-Konfiguration.\nLies den Startfehler im App-Protokoll. Daten und Schlüssel behalten; nicht deinstallieren oder die Datenbank zurücksetzen."
+  "error_SETUP_REQUIRED": "Prüfe Domain, Port und Dateinamen in der App-Konfiguration.\nLies den Startfehler im App-Protokoll. Daten und Schlüssel behalten; nicht deinstallieren oder die Datenbank zurücksetzen.",
+  "gateway_fallback": "Die App bleibt mit Gatewaycode erreichbar; das Abschalten konnte noch nicht bestätigt werden.",
+  "gateway_setup": "Melde dich mit Benutzer nocturne und dem angezeigten Code an. Schließe Nocturnes Eigentümer-/Kontoeinrichtung ab, speichere dann gateway_auth: false und starte neu.",
+  "gateway_recovery": "Lasse das Gateway an und schließe die Kontowiederherstellung ab. Stelle bei Bedarf das passende Backup wieder her; Daten und Schlüssel nicht zurücksetzen.",
+  "gateway_check": "Prüfe den Code und das App-Protokoll: Runtime/Status/Demo oder anonyme Zugriffsverweigerung wurde nicht bestätigt. Prüfe Nocturnes Zugriffs-/Freigabeeinstellungen. Beide normalen Datenrouten müssen anonymen Zugriff mit 401 ablehnen. Gateway bis dahin eingeschaltet lassen.",
+  "skip_gateway_label": "Gatewayprüfung bewusst überspringen",
+  "skip_gateway_help": "Nur bei ausgeschaltetem gateway_auth. Wrapperprüfung für gewünschten anonymen Zugriff überspringen; Nocturne-Zugriffs-/Freigabeeinstellungen bestimmen weiterhin die Rechte. Standard: aus. Speichern und neu starten.",
+  "gateway_skipped": "Gatewayprüfung bewusst übersprungen. Nocturne bestimmt anonymen Zugriff. Für erneute Prüfungen skip_gateway_check ausschalten und neu starten."
 }

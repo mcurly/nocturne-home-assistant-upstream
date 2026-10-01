@@ -46,11 +46,14 @@ def validate_options(options):
     gateway_auth = options.get('gateway_auth', True)
     if type(gateway_auth) is not bool:
         raise ValueError('gateway_auth moet true of false zijn')
+    skip_gateway_check = options.get('skip_gateway_check', False)
+    if type(skip_gateway_check) is not bool:
+        raise ValueError('skip_gateway_check moet true of false zijn')
     if not gateway_auth and not cert:
         raise ValueError('GATEWAY_TLS: zonder extra gatewaycode zijn eigen certificate/private_key-bestanden vereist')
     return dict(public_url=public_url, hostname=hostname, authority=parsed.netloc.lower(),
                 certificate=cert, private_key=key, gateway_auth=gateway_auth,
-                cookie_namespace=cookie_namespace)
+                cookie_namespace=cookie_namespace, skip_gateway_check=skip_gateway_check)
 
 
 def load_secrets(data_dir):

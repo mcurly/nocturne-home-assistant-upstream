@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "The certificate and private key do not belong together.\nSelect both files from the same successful issuance; restore or reissue the pair at the certificate manager. Do not mix an old key with a new certificate.",
   "error_CERT_EXPIRED": "Open the certificate manager’s Log and fix failed renewal.\nDuckDNS renews while running; the separate Let’s Encrypt app needs scheduled starts. Verify a new certificate was issued.",
   "error_CERT_NOT_YET_VALID": "Check Home Assistant’s system date/time and timezone.\nCheck the certificate’s start date; use a currently valid pair if it is still in the future.",
-  "error_SETUP_REQUIRED": "Open this app’s Configuration and correct the domain, port and certificate filenames.\nOpen this app’s Log for the startup error. Keep existing data and keys; do not uninstall or reset the database."
+  "error_SETUP_REQUIRED": "Open this app’s Configuration and correct the domain, port and certificate filenames.\nOpen this app’s Log for the startup error. Keep existing data and keys; do not uninstall or reset the database.",
+  "gateway_fallback": "The app is available with the gateway code still enabled; the request to disable it could not yet be confirmed.",
+  "gateway_setup": "Sign in through the gateway using username nocturne and the displayed code. Complete Nocturne’s owner/account setup, then save gateway_auth: false and restart.",
+  "gateway_recovery": "Keep the gateway on and complete Nocturne account recovery. Restore the matching backup if needed; do not reset data or keys.",
+  "gateway_check": "Check the code above and the app Log: runtime/status/demo or anonymous-data denial could not be confirmed. Review Nocturne access/share settings. Both normal data routes must refuse anonymous access (401). Keep the gateway on until this check passes.",
+  "skip_gateway_label": "Deliberately skip gateway check",
+  "skip_gateway_help": "Only with gateway_auth off. Skip the wrapper authentication check for intentional anonymous access; Nocturne access/share settings still decide permissions. Default off. Save and restart.",
+  "gateway_skipped": "Gateway check deliberately skipped. Nocturne access/share settings decide anonymous access. To restore checks, turn skip_gateway_check off and restart."
 }

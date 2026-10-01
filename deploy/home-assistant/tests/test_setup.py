@@ -39,11 +39,73 @@ class SetupTests(unittest.TestCase):
 
     def test_yaml_covers_dynamic_tenants_and_missing_invalid_domain_is_safe(self):
         page = help_ui.render({'public_url': 'https://example.duckdns.org:8448'})
-        self.assertIn('*.example.duckdns.org &gt; example.duckdns.org', page)
+        examples = page.split('<article id="wildcard-yaml">')[1].split('</article>')[0]
+        self.assertIn('*.mynocturne.duckdns.org &gt; mynocturne.duckdns.org', examples)
+        self.assertNotIn('example.duckdns.org', examples)
         self.assertIn('duckdns_token: YOUR_DUCKDNS_TOKEN', page)
         self.assertIn('CPU Percent', page)
         self.assertIn('Memory Percent', page)
         self.assertIn('mynocturne.duckdns.org', help_ui.render({'public_url': 'https://['}))
+
+    def test_failed_native_guard_keeps_effective_gateway_without_changing_user_options(self):
+        options = {'gateway_auth': False}
+        with patch.object(run, 'verify_native_auth', side_effect=ValueError('GATEWAY_SETUP: test')):
+            effective, code = run.effective_gateway(options)
+        self.assertFalse(options['gateway_auth'])
+        self.assertTrue(effective['gateway_auth'])
+        self.assertEqual(code, 'GATEWAY_SETUP')
+        for locale in help_ui.LANGUAGES:
+            page = help_ui.render({'ready': True, 'gateway': 'fixture-code', 'gateway_issue': code, 'error': code}, locale)
+            self.assertIn(code, page.split('<details>')[0])
+            self.assertIn('fixture-code', page)
+
+    def test_verified_native_mode_remains_off_and_unexpected_errors_are_not_hidden(self):
+        with patch.object(run, 'verify_native_auth'):
+            options, code = run.effective_gateway({'gateway_auth': False})
+            self.assertFalse(options['gateway_auth'])
+            self.assertEqual(code, '')
+        with patch.object(run, 'verify_native_auth', side_effect=ValueError('unknown problem')):
+            with self.assertRaises(ValueError):
+                run.effective_gateway({'gateway_auth': False})
+
+    def test_gateway_check_is_skipped_only_for_explicit_opt_in_with_gateway_off(self):
+        with patch.object(run, 'verify_native_auth') as verify:
+            effective, code = run.effective_gateway({'gateway_auth': False, 'skip_gateway_check': True})
+            verify.assert_not_called()
+            self.assertFalse(effective['gateway_auth'])
+            self.assertEqual(code, 'GATEWAY_SKIPPED')
+            effective, code = run.effective_gateway({'gateway_auth': True, 'skip_gateway_check': True})
+            self.assertTrue(effective['gateway_auth'])
+            self.assertEqual(code, '')
+        spec = json.loads((BASE / 'shared/app-spec.json').read_text())
+        self.assertFalse(spec['options']['skip_gateway_check'])
+        for locale in help_ui.LANGUAGES:
+            page = help_ui.render({'ready': True, 'error': 'GATEWAY_SKIPPED'}, locale)
+            self.assertIn('GATEWAY_SKIPPED', page.split('<details>')[0])
+        with self.assertRaisesRegex(ValueError, 'skip_gateway_check'):
+            run.validate_options({'skip_gateway_check': 'true'})
+
+
+    def test_share_permission_flag_is_not_a_substitute_for_actual_auth_denial(self):
+        from unittest.mock import MagicMock
+        for sharing in (True, False):
+            for denial in (200, 401, 503):
+                responses = []
+                for status_code in (200, 401, denial):
+                    connection = MagicMock()
+                    response = connection.getresponse.return_value
+                    response.status = status_code
+                    response.read.return_value = json.dumps({'status': 'ok', 'runtimeState': 'loaded',
+                        'anonymousReadAccess': sharing, 'isDemo': False}).encode()
+                    responses.append(connection)
+                with patch.object(run.http.client, 'HTTPConnection', side_effect=responses):
+                    if denial == 401:
+                        run.verify_native_auth({'authority': 'mynocturne.duckdns.org:8449'})
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'GATEWAY_DENIAL'):
+                            run.verify_native_auth({'authority': 'mynocturne.duckdns.org:8449'})
+                responses[1].getresponse.return_value.read.assert_not_called()
+                responses[2].getresponse.return_value.read.assert_not_called()
 
     def test_paired_run_rejects_success_for_other_source_revision(self):
         with patch('candidate.github', return_value={'workflow_runs': [

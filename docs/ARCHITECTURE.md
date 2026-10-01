@@ -16,6 +16,13 @@ requests a certificate, accepts certificate terms, stores a DuckDNS token or cha
 HA Core networking. Configuration stays in Home Assistant. The extra gateway code is
 shown only to an authenticated HA ingress client after successful startup.
 
+With the gateway disabled, native-auth checks normally run before web startup.
+Unconfirmed checks retain the outer gateway and show the reason without stopping
+healthy services. Explicit `skip_gateway_check: true` with `gateway_auth: false`
+skips only this wrapper preflight; Nocturne still controls read/write permissions.
+TLS, host/tenant validation and forwarded-header protections remain active. The
+helper visibly reports the bypass. Examples use a fixed generic domain.
+
 Self-signed certificates are restricted to disposable CI containers through
 `NOCTURNE_CI_TEST_CERTIFICATE=1`. Normal installations require a trusted certificate
 pair; a missing pair opens the help path rather than a fake successful setup.

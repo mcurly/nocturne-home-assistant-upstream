@@ -49,6 +49,32 @@ Keep these as user checks. Use cold backups before upgrades; an old image does n
 reverse a database migration. Stable and Main have independent data. Moving from the
 old repository is a separate identity/backup migration, not an in-place package rename.
 
+## Deliberately allow anonymous access
+
+To disable the extra gateway code and consciously skip the wrapper's authentication
+check, edit app Configuration as YAML, retaining your other settings:
+
+```yaml
+gateway_auth: false
+skip_gateway_check: true
+```
+
+Save and restart. Matching certificate/key files are still required. This delegates
+access to Nocturne's own access/share permissions; it does not grant public read or
+write rights itself. Configure the intended anonymous permissions in Nocturne.
+The helper prominently displays `GATEWAY_SKIPPED`. Turning `gateway_auth` on always
+restores the extra code, regardless of the skip option.
+
+By default `skip_gateway_check` is false. With the gateway off, the wrapper checks
+loaded status and anonymous denial on two data routes. If this cannot be confirmed,
+the app stays running with the extra code enabled, and the helper displays the reason
+and next steps. Your saved settings are preserved. To restore these checks, set
+`skip_gateway_check: false` and restart. Existing accounts and data remain intact.
+
+Wildcard YAML examples always use `mynocturne.duckdns.org`; substitute your own domain
+locally. Only the actual status/open link shows your configured address.
+
+
 ## Tenant addresses: base domain AND wildcard certificate
 
 For `https://user1.mynocturne.duckdns.org:8448`, the certificate must contain both

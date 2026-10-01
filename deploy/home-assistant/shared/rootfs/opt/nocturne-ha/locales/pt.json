@@ -44,5 +44,12 @@
   "error_CERT_KEY_MISMATCH": "O certificado e a chave privada não correspondem.\nEscolha ambos os ficheiros da mesma emissão; restaure ou volte a emitir o par.",
   "error_CERT_EXPIRED": "Corrija a renovação falhada no gestor de certificados.\nMantenha DuckDNS a funcionar; agende arranques da app Let’s Encrypt separada. Confirme a nova emissão.",
   "error_CERT_NOT_YET_VALID": "Verifique data, hora e fuso horário do Home Assistant.\nVerifique o início da validade; use um par já válido.",
-  "error_SETUP_REQUIRED": "Corrija domínio, porta e ficheiros em Configuração.\nConsulte o Registo desta app. Preserve dados e chaves; não desinstale nem reponha a base de dados."
+  "error_SETUP_REQUIRED": "Corrija domínio, porta e ficheiros em Configuração.\nConsulte o Registo desta app. Preserve dados e chaves; não desinstale nem reponha a base de dados.",
+  "gateway_fallback": "A app continua acessível com o código gateway ativo; a desativação ainda não foi confirmada.",
+  "gateway_setup": "Entre com nocturne e o código apresentado. Conclua a criação do proprietário/conta Nocturne, guarde gateway_auth: false e reinicie.",
+  "gateway_recovery": "Mantenha o gateway ativo e conclua a recuperação de conta. Restaure a cópia correspondente se necessário; não reponha dados ou chaves.",
+  "gateway_check": "Verifique código e registo: runtime/estado/demo ou recusa de dados anónimos não confirmada. Verifique acesso e partilha no Nocturne. Ambas as rotas normais devem recusar acesso anónimo (401). Mantenha o gateway ativo até lá.",
+  "skip_gateway_label": "Ignorar deliberadamente a verificação",
+  "skip_gateway_help": "Apenas com gateway_auth desativado. Ignora a verificação do wrapper para acesso anónimo intencional; Nocturne continua a determinar permissões de acesso e partilha. Desativado por predefinição. Guarda e reinicia.",
+  "gateway_skipped": "Verificação ignorada deliberadamente. Nocturne determina o acesso anónimo. Desativa skip_gateway_check e reinicia para restaurar as verificações."
 }

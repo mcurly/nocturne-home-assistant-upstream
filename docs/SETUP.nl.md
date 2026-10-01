@@ -4,6 +4,34 @@ De HA-app helpt je Nocturne te starten. Een vaste naam, een vertrouwd certificaa
 een werkende route vanaf jouw apparaat moeten daarbij bij elkaar passen. De hulp blijft
 in Home Assistant bereikbaar wanneer een certificaat ontbreekt of onjuist is.
 
+## Gatewaycontrole bewust overslaan voor anonieme toegang
+
+Wil je de extra gatewaycode uitschakelen en bewust de toegangscontrole van de wrapper
+overslaan? Open app **Configuratie → Bewerken als YAML**. Behoud de overige instellingen
+en stel deze twee velden in:
+
+```yaml
+gateway_auth: false
+skip_gateway_check: true
+```
+
+Sla op en herstart. Passende certificaat- en sleutelbestanden blijven verplicht.
+Nocturne bepaalt vervolgens via zijn eigen toegangs- en deelinstellingen welke gegevens
+anoniem toegankelijk zijn. Deze optie geeft zelf geen lees- of schrijfrechten: stel de
+gewenste anonieme rechten in Nocturne in. De hulp toont duidelijk `GATEWAY_SKIPPED`.
+Met `gateway_auth: true` is de extra code altijd actief, ook als de overslagoptie aan staat.
+
+Standaard staat `skip_gateway_check` uit. Bij een uitgeschakelde gateway controleert de
+wrapper de geladen status en weigering van anonieme toegang op twee gegevensroutes.
+Lukt bevestigen niet, dan blijft de app draaien met de extra code aan. De hulp toont de
+reden en vervolgstappen. Je opgeslagen instellingen blijven behouden. Zet
+`skip_gateway_check: false` en herstart om de controles weer te gebruiken. Bestaande
+accounts en gegevens blijven behouden.
+
+Wildcard YAML-voorbeelden gebruiken altijd `mynocturne.duckdns.org`. Vervang die naam
+lokaal. Alleen de echte status en de knop om Nocturne te openen tonen je ingestelde adres.
+
+
 ## 1. Kies je situatie
 
 Heb je al een domein met een werkend certificaat in Home Assistant? Gebruik die bestaande
