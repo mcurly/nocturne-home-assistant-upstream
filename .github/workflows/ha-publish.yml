@@ -8,14 +8,16 @@ on:
         description: Rebuild unchanged upstream versions (dependency maintenance)
         type: boolean
         default: false
+  pull_request:
+    paths: ['deploy/home-assistant/**', '.github/workflows/ha-publish.yml']
   push:
     branches: [main]
     paths: ['deploy/home-assistant/**', '.github/workflows/ha-publish.yml']
 permissions:
   contents: read
 concurrency:
-  group: ha-publish
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('ha-publish-pr-{0}', github.event.pull_request.number) || 'ha-publish' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   select:
     runs-on: ubuntu-24.04
@@ -43,17 +45,22 @@ jobs:
         run: |
           VERSION=$(python deploy/home-assistant/tools/versions.py --repository "$REPOSITORY" --run-number "$RUN_NUMBER" --attempt "$RUN_ATTEMPT")
           EXTRA=()
-          if [ "$FORCE" = true ]; then EXTRA+=(--force); fi
+          if [ "$FORCE" = true ] || [ "$GITHUB_EVENT_NAME" = pull_request ]; then EXTRA+=(--force); fi
           PLATFORMS=$(python -c "import json; print(','.join(json.load(open('deploy/home-assistant/platforms.json'))))")
           python deploy/home-assistant/tools/check_locales.py --upstream
           python deploy/home-assistant/tools/candidate.py --output work/candidates --repository "$REPOSITORY" --version "$VERSION" --commit "$COMMIT" --platforms "$PLATFORMS" "${EXTRA[@]}"
           python - <<'PY'
-          import json, os
+          import json, os, sys
+          sys.path.insert(0, 'deploy/home-assistant/tools')
+          import candidate
           matrix = json.load(open('work/candidates/matrix.json'))
+          deferred = json.load(open('work/candidates/deferred.json'))
+          if os.environ['GITHUB_EVENT_NAME'] == 'pull_request':
+              candidate.require_complete_pr_matrix(
+                  matrix, deferred, json.load(open('deploy/home-assistant/platforms.json')))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write('matrix=' + json.dumps(matrix, separators=(',', ':')) + '\n')
               out.write('changed=' + str(bool(matrix['include'])).lower() + '\n')
-          deferred = json.load(open('work/candidates/deferred.json'))
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
               summary.write('## Publication selection\n\n')
               for channel in sorted({item['channel'] for item in matrix['include']}):
@@ -71,7 +78,7 @@ jobs:
           retention-days: 7
   build:
     needs: select
-    if: needs.select.outputs.changed == 'true'
+    if: needs.select.outputs.changed == 'true' && github.event_name != 'pull_request'
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
@@ -82,6 +89,8 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: candidates
@@ -116,9 +125,48 @@ jobs:
             exit 1
           fi
           docker push "$IMAGE"
+  build-pr:
+    needs: select
+    if: needs.select.outputs.changed == 'true' && github.event_name == 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: candidates
+          path: work/candidates
+      - name: Build and validate PR images without publishing credentials
+        env:
+          CONTEXT: ${{ matrix.context }}
+          REPOSITORY: ${{ github.repository }}
+          CHANNEL: ${{ matrix.channel }}
+          ARCH: ${{ matrix.arch }}
+          HASS_ARCH: ${{ matrix.hass_arch }}
+          VERSION: ${{ needs.select.outputs.version }}
+          BASELINE: ${{ matrix.baseline }}
+        run: |
+          IMAGE="ghcr.io/${REPOSITORY,,}/nocturne-${CHANNEL}-${HASS_ARCH}:$VERSION"
+          docker build --platform "linux/$ARCH" --tag "$IMAGE" "$CONTEXT"
+          python deploy/home-assistant/tools/smoke.py --image "$IMAGE"
+          python deploy/home-assistant/tools/setup_smoke.py --image "$IMAGE"
+          if [ -n "$BASELINE" ]; then
+            docker pull "$BASELINE"
+            python deploy/home-assistant/tools/recovery_smoke.py --image "$IMAGE" --baseline "$BASELINE"
+          else
+            python deploy/home-assistant/tools/recovery_smoke.py --image "$IMAGE" --baseline "$IMAGE"
+          fi
+          echo 'Pull request image passed smoke/recovery checks; it will not be published.'
   promote:
     needs: [select, build]
-    if: needs.select.outputs.changed == 'true'
+    if: needs.select.outputs.changed == 'true' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     permissions:
       contents: write
