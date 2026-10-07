@@ -3,9 +3,9 @@
   "commit": "8e1de90706cf0dc0a99fb64628a5c8cc8a3e5ae1",
   "upstream_tag": "main-8e1de90",
   "upstream_run": 37347496918,
-  "recipe": "7ab34e8675b018f703ae78e26463684fc0930e5024a023137b854cbcb394f7ea",
-  "version": "0.2.101",
-  "wrapper_commit": "f84891d007dd23f8ad8a107d54331f56d1bd54af",
+  "recipe": "35332ea61e1ae304193e9fab8aa591a3ef18e8e00478870b4e5e5f1b12595124",
+  "version": "0.2.201",
+  "wrapper_commit": "fa7cfd3a41e7eef3672423e7bac66639174e55e1",
   "repository": "mcurly/nocturne-home-assistant-upstream",
   "platforms": [
     "amd64",
@@ -14,10 +14,10 @@
   "links": {
     "source_url": "https://github.com/nightscout/nocturne/tree/8e1de90706cf0dc0a99fb64628a5c8cc8a3e5ae1",
     "release_url": null,
-    "wrapper_url": "https://github.com/mcurly/nocturne-home-assistant-upstream/tree/f84891d007dd23f8ad8a107d54331f56d1bd54af/deploy/home-assistant",
+    "wrapper_url": "https://github.com/mcurly/nocturne-home-assistant-upstream/tree/fa7cfd3a41e7eef3672423e7bac66639174e55e1/deploy/home-assistant",
     "build_url": "https://github.com/nightscout/nocturne/actions/runs/37347496918"
   },
-  "baseline_image": null,
+  "baseline_image": "ghcr.io/mcurly/nocturne-home-assistant-upstream/nocturne-main-{arch}:0.2.101",
   "images": {
     "amd64": {
       "api": "sha256:b5f21b80c9c06aa8cb2a060c7dd2399f51035a3f2d3c952fb7a856d8b75e9948",
@@ -28,9 +28,9 @@
       "web": "sha256:a2f80988c27a5f06491a24b14b3d92d538ad04279ce469a4d013a9ff71a8cde3"
     }
   },
-  "image": "ghcr.io/mcurly/nocturne-home-assistant-upstream/nocturne-main-{arch}:0.2.101",
+  "image": "ghcr.io/mcurly/nocturne-home-assistant-upstream/nocturne-main-{arch}:0.2.201",
   "digests": {
-    "amd64": "sha256:1282c78ef48c306466796a87cd2eb093c95189fc0f4de960f9506c2da331cf88",
-    "aarch64": "sha256:f97de5732e4570c183eab4f0f1f0dbd21de896f4facf58d218ea965b850948ea"
+    "amd64": "sha256:886c3adf795b4c22ffaed829e56cdbe939832f3da5e357e406fed394551a38f2",
+    "aarch64": "sha256:51f97c6b40f13cab86b41cb4f27e777d20037e171c6f339ac68c150cac525514"
   }
 }

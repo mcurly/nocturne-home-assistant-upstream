@@ -3,9 +3,9 @@
   "commit": "d9e1430975c7a05967cba66374392f75f08c858f",
   "upstream_tag": "0.2.7",
   "upstream_run": 34594063064,
-  "recipe": "7ab34e8675b018f703ae78e26463684fc0930e5024a023137b854cbcb394f7ea",
-  "version": "0.2.101",
-  "wrapper_commit": "f84891d007dd23f8ad8a107d54331f56d1bd54af",
+  "recipe": "35332ea61e1ae304193e9fab8aa591a3ef18e8e00478870b4e5e5f1b12595124",
+  "version": "0.2.201",
+  "wrapper_commit": "fa7cfd3a41e7eef3672423e7bac66639174e55e1",
   "repository": "mcurly/nocturne-home-assistant-upstream",
   "platforms": [
     "amd64",
@@ -14,10 +14,10 @@
   "links": {
     "source_url": "https://github.com/nightscout/nocturne/tree/d9e1430975c7a05967cba66374392f75f08c858f",
     "release_url": "https://github.com/nightscout/nocturne/releases/tag/v0.2.7",
-    "wrapper_url": "https://github.com/mcurly/nocturne-home-assistant-upstream/tree/f84891d007dd23f8ad8a107d54331f56d1bd54af/deploy/home-assistant",
+    "wrapper_url": "https://github.com/mcurly/nocturne-home-assistant-upstream/tree/fa7cfd3a41e7eef3672423e7bac66639174e55e1/deploy/home-assistant",
     "build_url": "https://github.com/nightscout/nocturne/actions/runs/34594063064"
   },
-  "baseline_image": null,
+  "baseline_image": "ghcr.io/mcurly/nocturne-home-assistant-upstream/nocturne-stable-{arch}:0.2.101",
   "images": {
     "amd64": {
       "api": "sha256:507f3497203703382f204b1833ab4e6ac5540906042705b676b7a2984a95c6b9",
@@ -28,9 +28,9 @@
       "web": "sha256:3fc19100a29984ae9f22a233324c1f4a4b05f07ea35346a7e2c56a0b6998e000"
     }
   },
-  "image": "ghcr.io/mcurly/nocturne-home-assistant-upstream/nocturne-stable-{arch}:0.2.101",
+  "image": "ghcr.io/mcurly/nocturne-home-assistant-upstream/nocturne-stable-{arch}:0.2.201",
   "digests": {
-    "amd64": "sha256:54c5acd45d42b7e9281493ad402869d50cccffcc4a2c1403827a3feebd7a7a92",
-    "aarch64": "sha256:c4c94d0e6174b4c44a2086432b2a4dfd92262aa1c4edf866830b783765b88d65"
+    "amd64": "sha256:63bf9fe0081c1bf21afd62f2cc0cad62a21dfabdd6666b52391c77f9f59cde6f",
+    "aarch64": "sha256:62a8a497d5d22d24777cb7e0dc04437991c6ee072cfd473ccc323d1ae4997533"
   }
 }

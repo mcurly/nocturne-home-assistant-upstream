@@ -43,7 +43,7 @@
   },
   "stage": "experimental",
   "name": "Nocturne Stable",
-  "version": "0.2.101",
+  "version": "0.2.201",
   "slug": "nocturne_local",
   "description": "Nocturne 0.2.7 · setup assistant",
   "url": "https://github.com/mcurly/nocturne-home-assistant-upstream",
