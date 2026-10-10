@@ -1,21 +1,21 @@
 # Nocturne for Home Assistant — upstream proposal
 
-[![Add to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%23home-assistant)
+[![Add to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fmcurly%2Fnocturne-home-assistant-upstream%23home-assistant)
 
-[![Wrapper checks](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml/badge.svg)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml)
-[![Publish Stable and Main](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml/badge.svg)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml)
-[![Main branch checks](https://img.shields.io/github/check-runs/smokkelaar/nocturne-home-assistant-upstream/main?label=Main%20branch%20checks)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/commits/main/)
+[![Wrapper checks](https://github.com/mcurly/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml/badge.svg)](https://github.com/mcurly/nocturne-home-assistant-upstream/actions/workflows/ha-validate.yml)
+[![Publish Stable and Main](https://github.com/mcurly/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml/badge.svg)](https://github.com/mcurly/nocturne-home-assistant-upstream/actions/workflows/ha-publish.yml)
+[![Main branch checks](https://img.shields.io/github/check-runs/mcurly/nocturne-home-assistant-upstream/main?label=Main%20branch%20checks)](https://github.com/mcurly/nocturne-home-assistant-upstream/commits/main/)
 
-[![Stable HA package](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fconfig.json&query=%24.version&label=Stable%20HA%20package&color=blue)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/stable/CHANGELOG.md)
-[![Stable Nocturne](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fprovenance.json&query=%24.upstream_tag&label=Stable%20Nocturne&color=blue)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/stable/provenance.json)
-[![Main HA package](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fconfig.json&query=%24.version&label=Main%20HA%20package&color=orange)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/main/CHANGELOG.md)
-[![Main Nocturne snapshot](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fprovenance.json&query=%24.upstream_tag&label=Main%20Nocturne&color=orange)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/main/provenance.json)
+[![Stable HA package](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fconfig.json&query=%24.version&label=Stable%20HA%20package&color=blue)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/stable/CHANGELOG.md)
+[![Stable Nocturne](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fprovenance.json&query=%24.upstream_tag&label=Stable%20Nocturne&color=blue)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/stable/provenance.json)
+[![Main HA package](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fconfig.json&query=%24.version&label=Main%20HA%20package&color=orange)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/main/CHANGELOG.md)
+[![Main Nocturne snapshot](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fprovenance.json&query=%24.upstream_tag&label=Main%20Nocturne&color=orange)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/main/provenance.json)
 
 Stable and Main are published for **AMD64 and ARM64**, prebuilt and tested on native
 GitHub Actions runners, with a multilingual setup assistant.
 This clean repository contains the complete existing HA runtime, redesigned help,
 and a publication pipeline. Personal extensions and legacy test channels are excluded.
-The runtime derives from smokkelaar/nocturne-home-assistant at
+The runtime derives from mcurly/nocturne-home-assistant at
 `8ad3595da10fd109411e3e1cb58a5d8fc8816ea8`, under AGPL-3.0-only.
 
 **Pilot, not yet an accepted Nightscout distribution.** Images become installable only
@@ -23,8 +23,8 @@ after container tests and anonymous registry verification pass. A build failure 
 the previously published store version. Real HAOS upgrades and passkey/browser checks
 remain part of the user test plan.
 
-Development experiments and smokkelaar's personal test builds live in
-[nocturne-home-assistant](https://github.com/smokkelaar/nocturne-home-assistant).
+Development experiments and mcurly's personal test builds live in
+[nocturne-home-assistant](https://github.com/mcurly/nocturne-home-assistant).
 Suitable changes are carried over here after testing; experimental Personal and
 Test A/B/C builds are not automatically included in Stable or Main.
 
@@ -43,8 +43,8 @@ source of truth.
 
 | Channel | AMD64 (x86-64) | ARM64 (HA: `aarch64`) |
 | --- | --- | --- |
-| Stable | [![Stable AMD64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fconfig.json&query=%24.version&label=Stable%20AMD64&color=blue)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/stable/CHANGELOG.md) · [Image](https://github.com/users/smokkelaar/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-stable-amd64) | [![Stable ARM64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fconfig.json&query=%24.version&label=Stable%20ARM64&color=blue)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/stable/CHANGELOG.md) · [Image](https://github.com/users/smokkelaar/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-stable-aarch64) |
-| Main | [![Main AMD64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fconfig.json&query=%24.version&label=Main%20AMD64&color=orange)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/main/CHANGELOG.md) · [Image](https://github.com/users/smokkelaar/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-main-amd64) | [![Main ARM64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsmokkelaar%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fconfig.json&query=%24.version&label=Main%20ARM64&color=orange)](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/main/CHANGELOG.md) · [Image](https://github.com/users/smokkelaar/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-main-aarch64) |
+| Stable | [![Stable AMD64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fconfig.json&query=%24.version&label=Stable%20AMD64&color=blue)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/stable/CHANGELOG.md) · [Image](https://github.com/users/mcurly/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-stable-amd64) | [![Stable ARM64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fstable%2Fconfig.json&query=%24.version&label=Stable%20ARM64&color=blue)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/stable/CHANGELOG.md) · [Image](https://github.com/users/mcurly/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-stable-aarch64) |
+| Main | [![Main AMD64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fconfig.json&query=%24.version&label=Main%20AMD64&color=orange)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/main/CHANGELOG.md) · [Image](https://github.com/users/mcurly/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-main-amd64) | [![Main ARM64 build](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmcurly%2Fnocturne-home-assistant-upstream%2Fhome-assistant%2Fmain%2Fconfig.json&query=%24.version&label=Main%20ARM64&color=orange)](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/main/CHANGELOG.md) · [Image](https://github.com/users/mcurly/packages/container/package/nocturne-home-assistant-upstream%2Fnocturne-main-aarch64) |
 
 Click a build badge for its published package information and upstream change links.
 Stable links to the exact Nocturne release notes. Main is a source snapshot and links
@@ -55,9 +55,9 @@ passes; these badges show the last successfully published package.
 | Item | Stable | Main |
 | --- | --- | --- |
 | Nocturne source | Published Nocturne release | Tested snapshot of Nocturne `main` |
-| Published version, source SHA and image digests | [Stable metadata](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/stable/provenance.json) | [Main metadata](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/main/provenance.json) |
+| Published version, source SHA and image digests | [Stable metadata](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/stable/provenance.json) | [Main metadata](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/main/provenance.json) |
 | Installation | Prebuilt container | Prebuilt container |
-| Supported architecture | [Published architectures](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/stable/config.json) | [Published architectures](https://github.com/smokkelaar/nocturne-home-assistant-upstream/blob/home-assistant/main/config.json) |
+| Supported architecture | [Published architectures](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/stable/config.json) | [Published architectures](https://github.com/mcurly/nocturne-home-assistant-upstream/blob/home-assistant/main/config.json) |
 | Default HTTPS port | 8448 | 8449 |
 | Update checks | Every hour | Every hour |
 | Setup languages | Eleven; English by default | Eleven; English by default |
@@ -107,7 +107,7 @@ remain in the [acceptance checklist](docs/ACCEPTANCE.md).
 Use **Add to Home Assistant** above to add the tested pilot repository, or add:
 
 ```
-https://github.com/smokkelaar/nocturne-home-assistant-upstream#home-assistant
+https://github.com/mcurly/nocturne-home-assistant-upstream#home-assistant
 ```
 
 The `home-assistant` branch contains only generated store metadata. `main` contains
@@ -126,7 +126,7 @@ are read-only; the assistant does not change your router or Home Assistant Core 
 - [Architecture and automatic publication](docs/ARCHITECTURE.md)
 - [Acceptance and migration checklist](docs/ACCEPTANCE.md)
 - [Forking and publishing your own copy](docs/FORKING.md)
-- [Issue discussion and rationale](https://github.com/smokkelaar/nocturne-home-assistant/issues/41)
+- [Issue discussion and rationale](https://github.com/mcurly/nocturne-home-assistant/issues/41)
 
 ## Development
 

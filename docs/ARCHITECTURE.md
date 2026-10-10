@@ -79,7 +79,7 @@ bounded retention; prebuilt delivery only removes this app's new local buildcach
 
 ## Source and licenses
 
-Original code copied from `smokkelaar/nocturne-home-assistant` at
+Original code copied from `mcurly/nocturne-home-assistant` at
 `8ad3595da10fd109411e3e1cb58a5d8fc8816ea8` remains AGPL-3.0-only. Original copyright
 notices are in LICENSE. Personal code is excluded. Each build records wrapper/source
 SHA, pinned API/web digests, workflow identity, recipe fingerprint and final runtime

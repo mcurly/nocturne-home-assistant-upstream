@@ -202,7 +202,7 @@ def select(destination, owner_repo, version, wrapper_commit, platforms, force=Fa
                                    f'FROM ghcr.io/{UPSTREAM}/nocturne-{kind}@{pin}', dockerfile)
             dockerfile = re.sub(r'ARG BUILD_VERSION=\S+', 'ARG BUILD_VERSION=' + version, dockerfile)
             dockerfile = re.sub(r'ARG BUILD_ARCH=\S+', 'ARG BUILD_ARCH=' + ('aarch64' if arch == 'arm64' else arch), dockerfile)
-            dockerfile = dockerfile.replace('https://github.com/smokkelaar/nocturne-home-assistant',
+            dockerfile = dockerfile.replace('https://github.com/mcurly/nocturne-home-assistant',
                                             'https://github.com/' + owner_repo)
             (context / 'Dockerfile').write_text(dockerfile, encoding='utf-8')
             metadata = json.loads((context / 'rootfs/opt/nocturne-ha/version.json').read_text())

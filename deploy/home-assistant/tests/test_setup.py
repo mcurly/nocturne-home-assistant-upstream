@@ -152,11 +152,11 @@ class SetupTests(unittest.TestCase):
         self.assertNotIn('bad', help_ui.render({'ready': False, 'gateway': 'bad'}))
 
     def test_version_link_opens_upstream_tree_not_delivery_commit(self):
-        result = links('a' * 40, 'v0.2.7', 'smokkelaar/nocturne-home-assistant-upstream', 'b' * 40, 123)
+        result = links('a' * 40, 'v0.2.7', 'mcurly/nocturne-home-assistant-upstream', 'b' * 40, 123)
         self.assertEqual(result['source_url'], 'https://github.com/nightscout/nocturne/tree/' + 'a' * 40)
         self.assertIn('/releases/tag/v0.2.7', result['release_url'])
         self.assertIn('/tree/' + 'b' * 40 + '/deploy/home-assistant', result['wrapper_url'])
-        main = links('a' * 40, None, 'smokkelaar/nocturne-home-assistant-upstream', 'b' * 40, 123)
+        main = links('a' * 40, None, 'mcurly/nocturne-home-assistant-upstream', 'b' * 40, 123)
         self.assertIsNone(main['release_url'])
         page = help_ui.render({'links': main, 'version': 'main@aaaaaaa'})
         self.assertNotIn('Release notes', page)

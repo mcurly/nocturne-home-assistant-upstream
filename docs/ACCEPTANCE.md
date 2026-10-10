@@ -27,7 +27,7 @@
 ## Existing installation migration
 
 This new repository and its `#home-assistant` branch have a different HA repository
-identity from the existing `smokkelaar/nocturne-home-assistant` installation. Preserve
+identity from the existing `mcurly/nocturne-home-assistant` installation. Preserve
 the old app until a cold export/restore has been tested. The retained slugs do not make
 that identity change disappear. Stable and Main must not share a database directory.
 Keep the existing domain for passkeys when moving an account. Document logical dump/

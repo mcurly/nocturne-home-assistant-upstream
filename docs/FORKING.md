@@ -4,7 +4,7 @@ This guide shows how to run your own copy of this repository. Your fork builds i
 own Stable and Main images and publishes its own Home Assistant app store.
 
 > **Only want to install Nocturne?** You do not need a fork. In Home Assistant, add
-> `https://github.com/smokkelaar/nocturne-home-assistant-upstream#home-assistant`
+> `https://github.com/mcurly/nocturne-home-assistant-upstream#home-assistant`
 > as an app repository. See [SETUP.en.md](SETUP.en.md).
 
 ## How the repository works
@@ -39,7 +39,7 @@ its own images and branch. You do not need to change any owner names.
    without registry credentials.
 
 If you copied all branches, delete the copied `home-assistant` branch in your fork
-before the first run. Otherwise, the store keeps pointing to smokkelaar's images.
+before the first run. Otherwise, the store keeps pointing to mcurly's images.
 The pipeline also sees those versions as already published and skips them.
 
 ### 2. Enable GitHub Actions
@@ -102,7 +102,7 @@ to the same Home Assistant instance. Both offer apps with the same names and por
 
 ## Optional customization
 
-- README badges and links still point to `smokkelaar`. Update them in your fork for
+- README badges and links still point to `mcurly`. Update them in your fork for
   correct status badges.
 - `repository.yaml` is generated on every publication. Its URL and maintainer come
   from your repository. Its name is always `Nocturne Home Assistant (experimental)`
@@ -119,4 +119,4 @@ to the same Home Assistant instance. Both offer apps with the same names and por
 | Anonymous pull or `denied` error | GHCR package is private | Step 4 |
 | `Resource not accessible by integration` | Actions permissions are restricted by an organization policy | Allow the workflow permissions in organization settings |
 | Run succeeds but nothing is published | Channel is unchanged or deferred | Wait for the hourly schedule, or use **force** |
-| HA shows smokkelaar's versions | A copied store branch was used, or the URL is wrong | Delete the copied branch and publish again; check the HA repository URL |
+| HA shows mcurly's versions | A copied store branch was used, or the URL is wrong | Delete the copied branch and publish again; check the HA repository URL |

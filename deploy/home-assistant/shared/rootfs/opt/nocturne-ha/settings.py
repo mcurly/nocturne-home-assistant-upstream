@@ -218,7 +218,7 @@ def status_page(options, statuses, gateway_password, test_certificate, checks=No
 <dt>Softwarebasis</dt><dd><a href="{esc(base_url, quote=True)}" target="_blank" rel="noopener noreferrer">{esc(versions.get('base', versions['nocturne']))}</a></dd>
 <dt>Release</dt><dd><a href="{esc(release_url, quote=True)}" target="_blank" rel="noopener noreferrer">{esc(versions.get('release', versions['nocturne']))}</a></dd>
 <dt>Exacte broncommit</dt><dd><a href="{esc(source_url, quote=True)}" target="_blank" rel="noopener noreferrer"><code>{esc(source_commit or 'niet vastgelegd')}</code></a></dd>
-<dt>HA-wrapper</dt><dd><a aria-label="HA-wrapper {esc(versions['app'], quote=True)}" href="https://github.com/smokkelaar/nocturne-home-assistant" target="_blank" rel="noopener noreferrer">{esc(versions['app'])}</a> <span class="muted">(HA-pakket {esc(versions['package'])})</span></dd>
+<dt>HA-wrapper</dt><dd><a aria-label="HA-wrapper {esc(versions['app'], quote=True)}" href="https://github.com/mcurly/nocturne-home-assistant" target="_blank" rel="noopener noreferrer">{esc(versions['app'])}</a> <span class="muted">(HA-pakket {esc(versions['package'])})</span></dd>
 </dl>'''
     rows = ''.join(f'<li><strong>{esc(name)}</strong>: {esc(state)}</li>' for name, state in statuses.items())
     check_rows = ''.join(f'<li><strong>{esc(name)}</strong>: {esc(state)}</li>'
@@ -259,5 +259,5 @@ de Docker-imagegrootte is alleen buiten de app via Home Assistant Supervisor zic
 </section>
 <p>Test eerst alleen starten en het installatiescherm. Geen CGM/pomp koppelen, geen behandelgegevens invoeren.
 Geen internetpoorten openzetten. Deze experimentele app is geen HACS-integratie en geen medisch hulpmiddel.</p>
-<p><a href="https://github.com/smokkelaar/nocturne-home-assistant" target="_blank" rel="noopener noreferrer">Broncode, documentatie en bijdragen</a></p>
+<p><a href="https://github.com/mcurly/nocturne-home-assistant" target="_blank" rel="noopener noreferrer">Broncode, documentatie en bijdragen</a></p>
 </html>'''
